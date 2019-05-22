@@ -1,10 +1,9 @@
 package com.jvmless.shop.domain.productcatalog;
 
+import com.jvmless.shop.domain.reservation.Product;
 import com.jvmless.shop.sharedkernel.Money;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ProductTest {
 
