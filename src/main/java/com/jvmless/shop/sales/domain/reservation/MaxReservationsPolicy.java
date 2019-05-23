@@ -1,6 +1,6 @@
 package com.jvmless.shop.sales.domain.reservation;
 
-import com.jvmless.shop.sales.domain.productcatalog.UserId;
+import com.jvmless.shop.usermanagement.UserId;
 import com.jvmless.shop.usermanagement.User;
 import com.jvmless.shop.usermanagement.UserRepository;
 import com.jvmless.shop.usermanagement.UserRole;
@@ -9,7 +9,11 @@ import java.util.Set;
 
 public class MaxReservationsPolicy implements ReservationPolicy{
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public MaxReservationsPolicy(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public boolean check(Set<ReservationItem> reservationItems, UserId userId) {

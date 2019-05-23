@@ -1,4 +1,4 @@
-package com.jvmless.shop.sales.domain.productcatalog;
+package com.jvmless.shop.usermanagement;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

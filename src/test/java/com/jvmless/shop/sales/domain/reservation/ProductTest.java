@@ -1,7 +1,7 @@
 package com.jvmless.shop.sales.domain.reservation;
 
 import com.jvmless.shop.sales.domain.productcatalog.ProductId;
-import com.jvmless.shop.sales.domain.productcatalog.UserId;
+import com.jvmless.shop.usermanagement.UserId;
 import org.junit.Assert;
 import org.junit.Test;
 

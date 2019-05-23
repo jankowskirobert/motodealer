@@ -2,7 +2,7 @@ package com.jvmless.shop.sales.domain.reservation;
 
 import com.jvmless.shop.sales.domain.productcatalog.ProductId;
 import com.jvmless.shop.sales.domain.productcatalog.ProductStatus;
-import com.jvmless.shop.sales.domain.productcatalog.UserId;
+import com.jvmless.shop.usermanagement.UserId;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -20,7 +20,6 @@ import java.util.Set;
 public class Product {
 
     private ProductId productId;
-    private Set<ProductReservationPolicy> productReservationPolicies = new HashSet<>();
     private Set<ProductReservationHistory> productReservationHistories = new HashSet<>();
     private UserId owner;
     private ProductStatus status;
@@ -31,19 +30,8 @@ public class Product {
         this.status = ProductStatus.AVALIABLE;
     }
 
-    public void addReservationPolicy(ProductReservationPolicy productReservationPolicy) {
-        this.productReservationPolicies.add(productReservationPolicy);
-    }
-
-    /**
-     * Rezerwacja pojazdu na okres czasu, nie uwzględnia kolejek w rezerwacji. To nie ta dziedzina, prodkut w danym czasie może być
-     * zarezerowany do kupienia przez jednego uzytkownika, prodkut jako rezerwacja pilnuje czy user np. nie rezerwuje w kolko tego samego
-     * produktu czy polityka rezerwacji tego konkretnego produktu sie zgadza. Period jest tylko value object
-     * @param potentialOwner
-     * @param period
-     */
-    public void reserve(UserId potentialOwner, Period period) {
-        if(isAvailable() && canBeReserved()) {
+    public void reserve(UserId potentialOwner, Period period, ProductReservationPolicy productReservationPolicies) {
+        if(isAvailable() && canBeReserved(potentialOwner, productReservationPolicies)) {
             this.productReservationHistories.add(new ProductReservationHistory(period, potentialOwner));
             this.status = ProductStatus.RESERVED;
             this.owner = potentialOwner;
@@ -52,16 +40,37 @@ public class Product {
         }
     }
 
-    public void reserve(UserId potentialOwner) {
-        Period defaultPeriod = Period.ofDays(7);
-        reserve(potentialOwner, defaultPeriod);
+    public void close(UserId userId) {
+        //only if sold
     }
 
-    public boolean canBeReserved() {
-        if(this.productReservationPolicies.isEmpty()){
+    public void sell(UserId newOwner) {
+        switch(status) {
+            case AVALIABLE:
+                this.owner = newOwner;
+                this.status = ProductStatus.SOLD;
+                break;
+            case RESERVED:
+                if(!this.owner.equals(newOwner))
+                    throw new IllegalArgumentException("Cannot sell product, it is currently reserved by other user");
+                else
+                    this.status = ProductStatus.SOLD;
+                break;
+            default:
+                throw new IllegalStateException("Product cannot be sold");
+        }
+    }
+
+    public void reserve(UserId potentialOwner, ProductReservationPolicy productReservationPolicies) {
+        Period defaultPeriod = Period.ofDays(7);
+        reserve(potentialOwner, defaultPeriod, productReservationPolicies);
+    }
+
+    public boolean canBeReserved(UserId potentialOwner, ProductReservationPolicy productReservationPolicies) {
+        if(productReservationPolicies == null){
             return !ProductStatus.RESERVED.equals(this.status);
         } else {
-            return this.productReservationPolicies.stream().allMatch(x -> x.canReserve(this.productReservationHistories));
+            return productReservationPolicies.canReserve(potentialOwner, this.productReservationHistories);
         }
     }
 

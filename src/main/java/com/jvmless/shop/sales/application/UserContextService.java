@@ -1,6 +1,6 @@
 package com.jvmless.shop.sales.application;
 
-import com.jvmless.shop.sales.domain.productcatalog.UserId;
+import com.jvmless.shop.usermanagement.UserId;
 
 public interface UserContextService {
     UserId getCurrentUserId();
