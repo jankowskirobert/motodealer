@@ -1,4 +1,4 @@
-package com.jvmless.shop.domain.productcatalog;
+package com.jvmless.shop.sales.domain.productcatalog;
 
 public class ProductId {
     public static ProductId generate() {

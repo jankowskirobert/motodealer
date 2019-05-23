@@ -1,10 +1,9 @@
-package com.jvmless.shop.domain.reservation;
+package com.jvmless.shop.sales.domain.reservation;
 
-import com.jvmless.shop.domain.productcatalog.UserId;
+import com.jvmless.shop.sales.domain.productcatalog.UserId;
 
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
 
 public class ProductReservationHistory {
     private LocalDateTime reservationStart;

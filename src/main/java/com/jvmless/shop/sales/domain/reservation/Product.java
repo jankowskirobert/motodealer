@@ -1,14 +1,13 @@
-package com.jvmless.shop.domain.reservation;
+package com.jvmless.shop.sales.domain.reservation;
 
-import com.jvmless.shop.domain.productcatalog.ProductData;
-import com.jvmless.shop.domain.productcatalog.ProductId;
-import com.jvmless.shop.domain.productcatalog.ProductStatus;
-import com.jvmless.shop.domain.productcatalog.UserId;
-import com.jvmless.shop.sharedkernel.Money;
+import com.jvmless.shop.sales.domain.productcatalog.ProductId;
+import com.jvmless.shop.sales.domain.productcatalog.ProductStatus;
+import com.jvmless.shop.sales.domain.productcatalog.UserId;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 import java.time.Period;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -21,8 +20,8 @@ import java.util.Set;
 public class Product {
 
     private ProductId productId;
-    private Set<ProductReservationPolicy> productReservationPolicies;
-    private Set<ProductReservationHistory> productReservationHistories;
+    private Set<ProductReservationPolicy> productReservationPolicies = new HashSet<>();
+    private Set<ProductReservationHistory> productReservationHistories = new HashSet<>();
     private UserId owner;
     private ProductStatus status;
 
@@ -60,7 +59,7 @@ public class Product {
 
     public boolean canBeReserved() {
         if(this.productReservationPolicies.isEmpty()){
-            return true;
+            return !ProductStatus.RESERVED.equals(this.status);
         } else {
             return this.productReservationPolicies.stream().allMatch(x -> x.canReserve(this.productReservationHistories));
         }
