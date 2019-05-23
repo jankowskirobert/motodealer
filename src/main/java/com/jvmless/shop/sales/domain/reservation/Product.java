@@ -20,7 +20,6 @@ import java.util.Set;
 public class Product {
 
     private ProductId productId;
-    private Set<ProductReservationHistory> productReservationHistories = new HashSet<>();
     private UserId owner;
     private ProductStatus status;
 
@@ -30,9 +29,18 @@ public class Product {
         this.status = ProductStatus.AVALIABLE;
     }
 
+    /**
+     * Can be reserved is product is:
+     * -active
+     * -not reserved by other user
+     * -user not reserved this product in manner of policy and product history
+     * -also policy gives possibility to decide if product can be sold to user
+     * @param potentialOwner
+     * @param period
+     * @param productReservationPolicies
+     */
     public void reserve(UserId potentialOwner, Period period, ProductReservationPolicy productReservationPolicies) {
         if(isAvailable() && canBeReserved(potentialOwner, productReservationPolicies)) {
-            this.productReservationHistories.add(new ProductReservationHistory(period, potentialOwner));
             this.status = ProductStatus.RESERVED;
             this.owner = potentialOwner;
         } else {
@@ -70,7 +78,7 @@ public class Product {
         if(productReservationPolicies == null){
             return !ProductStatus.RESERVED.equals(this.status);
         } else {
-            return productReservationPolicies.canReserve(potentialOwner, this.productReservationHistories);
+            return productReservationPolicies.canReserve(potentialOwner, productId);
         }
     }
 

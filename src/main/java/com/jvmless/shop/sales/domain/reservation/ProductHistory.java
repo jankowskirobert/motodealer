@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 import java.time.Period;
 
 @Data
-public class ProductReservationHistory {
+public class ProductHistory {
     private LocalDateTime reservationStart;
     private LocalDateTime reservationEnd;
     private UserId potentialOwner;
 
-    protected ProductReservationHistory(Period period, UserId potentialOwner) {
+    protected ProductHistory(Period period, UserId potentialOwner) {
         reservationStart = LocalDateTime.now();
         reservationEnd = reservationStart.plus(period);
     }
