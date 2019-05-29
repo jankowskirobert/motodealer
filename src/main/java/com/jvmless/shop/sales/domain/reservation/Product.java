@@ -5,6 +5,7 @@ import com.jvmless.shop.sales.domain.productcatalog.ProductStatus;
 import com.jvmless.shop.usermanagement.UserId;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
 
 import java.time.Period;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Getter
 public class Product {
 
+    @Id
     private ProductId productId;
     private UserId owner;
     private ProductStatus status;
@@ -74,7 +76,7 @@ public class Product {
         reserve(potentialOwner, defaultPeriod, productReservationPolicies);
     }
 
-    public boolean canBeReserved(UserId potentialOwner, ProductReservationPolicy productReservationPolicies) {
+    private boolean canBeReserved(UserId potentialOwner, ProductReservationPolicy productReservationPolicies) {
         if(productReservationPolicies == null){
             return !ProductStatus.RESERVED.equals(this.status);
         } else {
