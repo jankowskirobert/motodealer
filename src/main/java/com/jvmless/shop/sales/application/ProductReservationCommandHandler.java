@@ -1,9 +1,6 @@
 package com.jvmless.shop.sales.application;
 
-import com.jvmless.shop.sales.domain.reservation.MaxReservationsPolicy;
-import com.jvmless.shop.sales.domain.reservation.OnlyOneReservationByUserPolicy;
-import com.jvmless.shop.sales.domain.reservation.Product;
-import com.jvmless.shop.sales.domain.reservation.Reservation;
+import com.jvmless.shop.sales.domain.reservation.*;
 import com.jvmless.shop.usermanagement.UserRepository;
 
 public class ProductReservationCommandHandler {
@@ -12,9 +9,10 @@ public class ProductReservationCommandHandler {
     private UserRepository userRepository;
     private UserContextService userContextService;
     private ReservationRepository reservationRepository;
-
+    private ProductReservationPolicyFactory productReservationPolicyFactory;
 
     public void handle(ProductReservationCommand productReservationCommand) {
+
         Product product = productRepository.find(productReservationCommand.getProductId());
         Reservation reservation = reservationRepository.find(productReservationCommand.getReservationId());
 
@@ -24,6 +22,6 @@ public class ProductReservationCommandHandler {
 
         OnlyOneReservationByUserPolicy onlyOneReservationByUserPolicy = new OnlyOneReservationByUserPolicy();
         //if he, then reserve this product for him
-        product.reserve(userContextService.getCurrentUserId(), onlyOneReservationByUserPolicy);
+        product.reserve(userContextService.getCurrentUserId(), productReservationPolicyFactory);
     }
 }

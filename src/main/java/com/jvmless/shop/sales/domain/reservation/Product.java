@@ -22,6 +22,7 @@ public class Product {
 
     @Id
     private ProductId productId;
+    private ProductReservationPolicyType reservationPolicyType;
     private UserId owner;
     private ProductStatus status;
 
@@ -29,20 +30,26 @@ public class Product {
         this.productId = productId;
         this.owner = owner;
         this.status = ProductStatus.AVALIABLE;
+        this.reservationPolicyType = ProductReservationPolicyType.ALL;
     }
 
-    /**
+    protected Product(ProductId productId, UserId owner, ProductReservationPolicyType productReservationPolicyType) {
+        this.productId = productId;
+        this.owner = owner;
+        this.status = ProductStatus.AVALIABLE;
+        this.reservationPolicyType = productReservationPolicyType;
+    }
+
+    /*
      * Can be reserved is product is:
      * -active
      * -not reserved by other user
      * -user not reserved this product in manner of policy and product history
      * -also policy gives possibility to decide if product can be sold to user
-     * @param potentialOwner
-     * @param period
-     * @param productReservationPolicies
      */
-    public void reserve(UserId potentialOwner, Period period, ProductReservationPolicy productReservationPolicies) {
-        if(isAvailable() && canBeReserved(potentialOwner, productReservationPolicies)) {
+    public void reserve(UserId potentialOwner, Period period, ProductReservationPolicyFactory productReservationPolicyFactory) {
+        ProductReservationPolicy productReservationPolicy = productReservationPolicyFactory.generate(this.reservationPolicyType);
+        if(isAvailable() && canBeReserved(potentialOwner, productReservationPolicy)) {
             this.status = ProductStatus.RESERVED;
             this.owner = potentialOwner;
         } else {
@@ -71,9 +78,9 @@ public class Product {
         }
     }
 
-    public void reserve(UserId potentialOwner, ProductReservationPolicy productReservationPolicies) {
+    public void reserve(UserId potentialOwner, ProductReservationPolicyFactory productReservationPolicyFactory) {
         Period defaultPeriod = Period.ofDays(7);
-        reserve(potentialOwner, defaultPeriod, productReservationPolicies);
+        reserve(potentialOwner, defaultPeriod, productReservationPolicyFactory);
     }
 
     private boolean canBeReserved(UserId potentialOwner, ProductReservationPolicy productReservationPolicies) {
