@@ -1,6 +1,6 @@
 package com.jvmless.shop.sales.domain.reservation;
 
-import com.jvmless.shop.sales.domain.FakeUserRepository;
+import com.jvmless.shop.usermanagement.InMemoryUserRepository;
 import com.jvmless.shop.usermanagement.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import java.util.HashSet;
 
 public class ReservationTest {
 
-    UserRepository userRepository = new FakeUserRepository();
+    UserRepository userRepository = new InMemoryUserRepository();
     ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository);
 
     @Before

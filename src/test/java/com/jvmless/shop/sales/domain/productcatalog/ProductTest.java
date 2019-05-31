@@ -1,6 +1,6 @@
 package com.jvmless.shop.sales.domain.productcatalog;
 
-import com.jvmless.shop.sales.domain.FakeUserRepository;
+import com.jvmless.shop.usermanagement.InMemoryUserRepository;
 import com.jvmless.shop.usermanagement.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,7 +11,7 @@ import java.util.HashSet;
 
 public class ProductTest {
 
-    private UserRepository userRepository = new FakeUserRepository();
+    private UserRepository userRepository = new InMemoryUserRepository();
     private ProductReservationPolicyFactory productReservationPolicyFactory = new ProductReservationPolicyFactory(userRepository);
 
     @Before

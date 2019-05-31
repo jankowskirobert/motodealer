@@ -1,4 +1,4 @@
-package com.jvmless.shop.sales.domain;
+package com.jvmless.shop.usermanagement;
 
 import com.jvmless.shop.usermanagement.User;
 import com.jvmless.shop.usermanagement.UserId;
@@ -6,7 +6,7 @@ import com.jvmless.shop.usermanagement.UserRepository;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class FakeUserRepository implements UserRepository {
+public class InMemoryUserRepository implements UserRepository {
 
     private ConcurrentHashMap<UserId, User> inMemory = new ConcurrentHashMap<>();
 

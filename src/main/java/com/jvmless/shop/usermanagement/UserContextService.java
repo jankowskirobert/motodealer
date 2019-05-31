@@ -1,4 +1,4 @@
-package com.jvmless.shop.sales.application;
+package com.jvmless.shop.usermanagement;
 
 import com.jvmless.shop.usermanagement.UserId;
 
