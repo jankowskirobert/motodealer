@@ -1,10 +1,7 @@
 package com.jvmless.shop.sales.domain.productcatalog;
 
 import com.jvmless.shop.sales.domain.FakeUserRepository;
-import com.jvmless.shop.usermanagement.User;
-import com.jvmless.shop.usermanagement.UserId;
-import com.jvmless.shop.usermanagement.UserRepository;
-import com.jvmless.shop.usermanagement.UserRole;
+import com.jvmless.shop.usermanagement.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +16,7 @@ public class ProductTest {
 
     @Before
     public void setUp() {
-        userRepository.save(new User(UserId.of("PREMIUM_USER"), new HashSet<>(Arrays.asList(UserRole.PREMIUM))));
+        userRepository.save(new User(UserId.of("PREMIUM_USER"),new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM));
     }
 
     @Test

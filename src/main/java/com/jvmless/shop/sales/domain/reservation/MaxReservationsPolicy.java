@@ -1,9 +1,6 @@
 package com.jvmless.shop.sales.domain.reservation;
 
-import com.jvmless.shop.usermanagement.UserId;
-import com.jvmless.shop.usermanagement.User;
-import com.jvmless.shop.usermanagement.UserRepository;
-import com.jvmless.shop.usermanagement.UserRole;
+import com.jvmless.shop.usermanagement.*;
 
 import java.util.Set;
 
@@ -18,10 +15,13 @@ public class MaxReservationsPolicy implements ReservationPolicy{
     @Override
     public boolean check(Set<ReservationItem> reservationItems, UserId userId) {
         User potentialOwner = userRepository.find(userId);
-        if(potentialOwner.hasRole(UserRole.STANDARD_BUYER)) {
+        if(potentialOwner.is(UserType.STANDARD_BUYER)) {
             if(reservationItems.isEmpty() || reservationItems.size() < 3){
                 return true;
             }
+        }
+        else if(potentialOwner.isTypeOrHigher(UserType.PREMIUM)) {
+            return true;
         }
         return false;
     }

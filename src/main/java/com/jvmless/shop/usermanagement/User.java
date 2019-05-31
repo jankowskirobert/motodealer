@@ -10,13 +10,17 @@ import java.util.Set;
 public class User {
     private UserId userId;
     private Set<UserRole> roles;
+    private UserType userType;
 
     public boolean hasRole(UserRole role) {
         return roles.contains(role);
     }
 
-    public boolean isAtLeast(UserRole role) {
-        //add role comparator
-        return false;
+    public boolean is(UserType type) {
+        return type.equals(this.userType);
+    }
+
+    public boolean isTypeOrHigher(UserType type) {
+        return type.equals(this.userType) || this.userType.getPriority() >= type.getPriority();
     }
 }
