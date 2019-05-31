@@ -2,26 +2,32 @@ package com.jvmless.shop.sales.domain.reservation;
 
 import com.jvmless.shop.usermanagement.UserId;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Reservation {
     private ReservationId reservationId;
-    private Set<ReservationItem> reservationItems;
+    private Set<ReservationItem> reservationItems = new HashSet<>();
+    private ReservationRule reservationRule;
     private UserId userId;
     private ReservationStatus reservationStatus;
 
-    protected Reservation(UserId userId) {
-
+    protected Reservation(ReservationId reservationId, UserId userId) {
+        this.reservationId = reservationId;
+        this.userId = userId;
     }
 
-    /**
-     *
-     * @param reservationPolicy (cannot be saved as a entity field in storage, must be delivery from outside)
-     */
-    public void reserve(ReservationPolicy reservationPolicy) {
+    private void updateReservationRule(ReservationRule reservationRule) {
+        this.reservationRule = reservationRule;
+    }
+
+    public boolean reserve(ReservationRuleFactory reservationRuleFactory) {
+        ReservationPolicy reservationPolicy = reservationRuleFactory.generate(reservationRule);
         if(reservationPolicy.check(reservationItems, userId) && isActive()) {
             this.reservationItems.add(new ReservationItem());
+            return true;
         }
+        return false;
     }
 
     public void close(){
