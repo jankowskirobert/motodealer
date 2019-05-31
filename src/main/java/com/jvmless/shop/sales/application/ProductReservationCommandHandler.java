@@ -1,7 +1,9 @@
 package com.jvmless.shop.sales.application;
 
+import com.jvmless.shop.sales.domain.productcatalog.Product;
+import com.jvmless.shop.sales.domain.productcatalog.ProductRepository;
+import com.jvmless.shop.sales.domain.productcatalog.ProductReservationPolicyFactory;
 import com.jvmless.shop.sales.domain.reservation.*;
-import com.jvmless.shop.usermanagement.UserRepository;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

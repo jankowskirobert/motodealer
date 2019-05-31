@@ -1,4 +1,4 @@
-package com.jvmless.shop.sales.domain.reservation;
+package com.jvmless.shop.sales.domain;
 
 import com.jvmless.shop.usermanagement.User;
 import com.jvmless.shop.usermanagement.UserId;

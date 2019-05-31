@@ -1,4 +1,4 @@
-package com.jvmless.shop.sales.domain.reservation;
+package com.jvmless.shop.sales.domain.productcatalog;
 
 public interface ProductReservationHistoryRepository {
 }

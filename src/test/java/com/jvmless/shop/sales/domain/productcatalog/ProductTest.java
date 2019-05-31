@@ -1,6 +1,6 @@
-package com.jvmless.shop.sales.domain.reservation;
+package com.jvmless.shop.sales.domain.productcatalog;
 
-import com.jvmless.shop.sales.domain.productcatalog.ProductId;
+import com.jvmless.shop.sales.domain.FakeUserRepository;
 import com.jvmless.shop.usermanagement.User;
 import com.jvmless.shop.usermanagement.UserId;
 import com.jvmless.shop.usermanagement.UserRepository;

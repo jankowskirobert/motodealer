@@ -1,11 +1,15 @@
 package com.jvmless.shop.sales.domain.reservation;
 
 import com.jvmless.shop.usermanagement.UserId;
+import lombok.Getter;
+import org.springframework.data.annotation.Id;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public class Reservation {
+    @Id
     private ReservationId reservationId;
     private Set<ReservationItem> reservationItems = new HashSet<>();
     private ReservationRule reservationRule;
@@ -15,6 +19,8 @@ public class Reservation {
     protected Reservation(ReservationId reservationId, UserId userId) {
         this.reservationId = reservationId;
         this.userId = userId;
+        this.reservationRule = ReservationRule.ONLY_ONE;
+        this.reservationStatus = ReservationStatus.ACTIVE;
     }
 
     private void updateReservationRule(ReservationRule reservationRule) {
@@ -22,15 +28,17 @@ public class Reservation {
     }
 
     public boolean reserve(ReservationRuleFactory reservationRuleFactory) {
-        ReservationPolicy reservationPolicy = reservationRuleFactory.generate(reservationRule);
-        if(reservationPolicy.check(reservationItems, userId) && isActive()) {
-            this.reservationItems.add(new ReservationItem());
-            return true;
+        if(isActive()) {
+            ReservationPolicy reservationPolicy = reservationRuleFactory.generate(reservationRule);
+            if (reservationPolicy.check(reservationItems, userId)) {
+                this.reservationItems.add(new ReservationItem());
+                return true;
+            }
         }
         return false;
     }
 
-    public void close(){
+    public void close() {
         if (isClosed())
             throw new IllegalStateException("Already closed");
         this.reservationStatus = ReservationStatus.CLOSED;

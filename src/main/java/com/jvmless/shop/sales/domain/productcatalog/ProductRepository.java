@@ -1,7 +1,7 @@
-package com.jvmless.shop.sales.application;
+package com.jvmless.shop.sales.domain.productcatalog;
 
 import com.jvmless.shop.sales.domain.productcatalog.ProductId;
-import com.jvmless.shop.sales.domain.reservation.Product;
+import com.jvmless.shop.sales.domain.productcatalog.Product;
 
 public interface ProductRepository {
     Product find(ProductId productId);

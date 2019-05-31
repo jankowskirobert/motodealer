@@ -14,4 +14,9 @@ public class User {
     public boolean hasRole(UserRole role) {
         return roles.contains(role);
     }
+
+    public boolean isAtLeast(UserRole role) {
+        //add role comparator
+        return false;
+    }
 }
