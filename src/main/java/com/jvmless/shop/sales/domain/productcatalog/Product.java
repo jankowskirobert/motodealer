@@ -1,6 +1,7 @@
 package com.jvmless.shop.sales.domain.productcatalog;
 
 import com.jvmless.shop.usermanagement.UserId;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
@@ -14,6 +15,7 @@ import java.time.Period;
  */
 @Accessors(fluent = true)
 @Getter
+@EqualsAndHashCode(of = "productId")
 public class Product {
 
     @Id
@@ -22,14 +24,14 @@ public class Product {
     private UserId owner;
     private ProductStatus status;
 
-    protected Product(ProductId productId, UserId owner) {
+    public Product(ProductId productId, UserId owner) {
         this.productId = productId;
         this.owner = owner;
         this.status = ProductStatus.AVAILABLE;
         this.reservationPolicyType = ProductReservationPolicyType.ALL;
     }
 
-    protected Product(ProductId productId, UserId owner, ProductReservationPolicyType productReservationPolicyType) {
+    public Product(ProductId productId, UserId owner, ProductReservationPolicyType productReservationPolicyType) {
         this.productId = productId;
         this.owner = owner;
         this.status = ProductStatus.AVAILABLE;

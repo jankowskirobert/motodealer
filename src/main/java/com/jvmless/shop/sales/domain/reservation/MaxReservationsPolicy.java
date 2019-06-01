@@ -4,7 +4,7 @@ import com.jvmless.shop.usermanagement.*;
 
 import java.util.Set;
 
-public class MaxReservationsPolicy implements ReservationPolicy{
+public class MaxReservationsPolicy implements ReservationPolicy {
 
     private final UserRepository userRepository;
 
@@ -15,14 +15,14 @@ public class MaxReservationsPolicy implements ReservationPolicy{
     @Override
     public boolean check(Set<ReservationItem> reservationItems, UserId userId) {
         User potentialOwner = userRepository.find(userId);
-        if(potentialOwner.is(UserType.STANDARD_BUYER)) {
-            if(reservationItems.isEmpty() || reservationItems.size() < 3){
+        if (potentialOwner != null)
+            if (potentialOwner.is(UserType.STANDARD_BUYER)) {
+                if (reservationItems.isEmpty() || reservationItems.size() < 3) {
+                    return true;
+                }
+            } else if (potentialOwner.isTypeOrHigher(UserType.PREMIUM)) {
                 return true;
             }
-        }
-        else if(potentialOwner.isTypeOrHigher(UserType.PREMIUM)) {
-            return true;
-        }
         return false;
     }
 }

@@ -16,7 +16,7 @@ public class Reservation {
     private UserId userId;
     private ReservationStatus reservationStatus;
 
-    protected Reservation(ReservationId reservationId, UserId userId) {
+    public Reservation(ReservationId reservationId, UserId userId) {
         this.reservationId = reservationId;
         this.userId = userId;
         this.reservationRule = ReservationRule.ONLY_ONE;
@@ -28,12 +28,13 @@ public class Reservation {
     }
 
     public boolean reserve(ReservationRuleFactory reservationRuleFactory) {
-        if(isActive()) {
+        if (isActive()) {
             ReservationPolicy reservationPolicy = reservationRuleFactory.generate(reservationRule);
-            if (reservationPolicy.check(reservationItems, userId)) {
-                this.reservationItems.add(new ReservationItem());
-                return true;
-            }
+            if (reservationPolicy != null)
+                if (reservationPolicy.check(reservationItems, userId)) {
+                    this.reservationItems.add(new ReservationItem());
+                    return true;
+                }
         }
         return false;
     }

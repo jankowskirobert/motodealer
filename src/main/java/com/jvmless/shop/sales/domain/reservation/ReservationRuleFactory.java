@@ -13,7 +13,7 @@ public class ReservationRuleFactory {
             case ONLY_ONE:
                 return new MaxReservationsPolicy(userRepository);
             case MULTIPLE_WITH_HISTORY:
-                return null;
+                return (reservedItems, userId) -> false;
             default:
                 return (reservedItems, userId) -> false;
         }

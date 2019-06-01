@@ -2,10 +2,7 @@ package com.jvmless.shop.sales.domain.productcatalog;
 
 import com.jvmless.shop.sales.domain.productcatalog.ProductId;
 import com.jvmless.shop.sales.domain.productcatalog.ProductReservationPolicy;
-import com.jvmless.shop.usermanagement.UserId;
-import com.jvmless.shop.usermanagement.UserRepository;
-import com.jvmless.shop.usermanagement.UserRole;
-import com.jvmless.shop.usermanagement.UserType;
+import com.jvmless.shop.usermanagement.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,6 +14,10 @@ public class OnlyPremium implements ProductReservationPolicy {
 
     @Override
     public boolean canReserve(UserId potentialOwner, ProductId productId) {
-        return userRepository.find(potentialOwner).is(UserType.PREMIUM);
+        User user = userRepository.find(potentialOwner);
+        if (user == null)
+            return false;
+        boolean result = user.is(UserType.PREMIUM);
+        return result;
     }
 }
