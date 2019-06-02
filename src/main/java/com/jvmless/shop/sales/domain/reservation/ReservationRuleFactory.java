@@ -10,7 +10,7 @@ public class ReservationRuleFactory {
 
     public ReservationPolicy generate(ReservationRule reservationRule) {
         switch (reservationRule) {
-            case ONLY_ONE:
+            case USERTYPE_MAX_RESERVATION_RULE:
                 return new MaxReservationsPolicy(userRepository);
             case MULTIPLE_WITH_HISTORY:
                 return (reservedItems, userId) -> false;

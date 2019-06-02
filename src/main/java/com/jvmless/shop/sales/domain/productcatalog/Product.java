@@ -1,5 +1,6 @@
 package com.jvmless.shop.sales.domain.productcatalog;
 
+import com.jvmless.shop.core.DomainException;
 import com.jvmless.shop.usermanagement.UserId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,11 +9,6 @@ import org.springframework.data.annotation.Id;
 
 import java.time.Period;
 
-/**
- * Product in context of SALE with some reservation rules in context of selling not in context i.e 'reserve for test drive'
- * ( because it is whole different context, it is involved if someone want to testdrive u cannot reserve it for someone else )
- * Pojazd do sprzedaży nie jest tym co pojazd do jazdy testowej
- */
 @Accessors(fluent = true)
 @Getter
 @EqualsAndHashCode(of = "productId")
@@ -23,6 +19,7 @@ public class Product {
     private ProductReservationPolicyType reservationPolicyType;
     private UserId owner;
     private ProductStatus status;
+    private MotorcycleTechnicalDetails motorcycleTechnicalDetails;
 
     public Product(ProductId productId, UserId owner) {
         this.productId = productId;
@@ -38,20 +35,13 @@ public class Product {
         this.reservationPolicyType = productReservationPolicyType;
     }
 
-    /*
-     * Can be reserved is product is:
-     * -active
-     * -not reserved by other user
-     * -user not reserved this product in manner of policy and product history
-     * -also policy gives possibility to decide if product can be sold to user
-     */
     public void reserve(UserId potentialOwner, Period period, ProductReservationPolicyFactory productReservationPolicyFactory) {
         ProductReservationPolicy productReservationPolicy = productReservationPolicyFactory.generate(this.reservationPolicyType);
         if (isAvailable() && canBeReserved(potentialOwner, productReservationPolicy)) {
             this.status = ProductStatus.RESERVED;
             this.owner = potentialOwner;
         } else {
-            throw new IllegalStateException("Product cannot be reserved");
+            throw new DomainException("Product cannot be reserved");
         }
     }
 
@@ -95,5 +85,11 @@ public class Product {
 
     public boolean isReserved() {
         return ProductStatus.RESERVED.equals(this.status);
+    }
+
+    public void updateDetails(MotorcycleTechnicalDetails motorcycleTechnicalDetails) {
+        if(isAvailable()){
+            this.motorcycleTechnicalDetails = motorcycleTechnicalDetails;
+        }
     }
 }

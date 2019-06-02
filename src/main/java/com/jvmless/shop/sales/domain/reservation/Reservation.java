@@ -1,5 +1,6 @@
 package com.jvmless.shop.sales.domain.reservation;
 
+import com.jvmless.shop.core.DomainException;
 import com.jvmless.shop.sales.domain.productcatalog.ProductId;
 import com.jvmless.shop.usermanagement.UserId;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class Reservation {
     public Reservation(ReservationId reservationId, UserId userId) {
         this.reservationId = reservationId;
         this.userId = userId;
-        this.reservationRule = ReservationRule.ONLY_ONE;
+        this.reservationRule = ReservationRule.USERTYPE_MAX_RESERVATION_RULE;
         this.reservationStatus = ReservationStatus.ACTIVE;
     }
 
@@ -40,7 +41,7 @@ public class Reservation {
                 );
             }
         } else {
-            throw new IllegalStateException("Cannot reserve, " +
+            throw new DomainException("Cannot reserve, " +
                     "you already reserved this product or reservation is inactive");
         }
     }

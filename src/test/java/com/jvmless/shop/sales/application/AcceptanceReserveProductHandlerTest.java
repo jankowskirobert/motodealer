@@ -1,6 +1,5 @@
 package com.jvmless.shop.sales.application;
 
-import com.jvmless.shop.core.DomainException;
 import com.jvmless.shop.sales.domain.productcatalog.*;
 import com.jvmless.shop.sales.domain.reservation.*;
 import com.jvmless.shop.usermanagement.*;
@@ -11,7 +10,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class ReserveProductHandlerTest {
+public class AcceptanceReserveProductHandlerTest {
 
     private final ProductId PRODUCT_ID = ProductId.of("PRODUCT_1");
     private final UserId USER_ID = UserId.of("TEST");
@@ -37,7 +36,7 @@ public class ReserveProductHandlerTest {
                 new User(
                         USER_ID
                         , new HashSet<>(Arrays.asList(UserRole.CLIENT))
-                        , UserType.STANDARD_BUYER
+                        , UserType.PREMIUM
                 )
         );
 
@@ -49,7 +48,7 @@ public class ReserveProductHandlerTest {
                 );
     }
 
-    @Test(expected = DomainException.class)
+    @Test
     public void shouldReserveProduct() {
         UserContextService userContextService = () -> USER_ID;
         ProductReservationCommandHandler productReservationCommandHandler
@@ -64,5 +63,9 @@ public class ReserveProductHandlerTest {
         productReservationCommand.setProductId(PRODUCT_ID);
         productReservationCommand.setReservationId(RESERVATION_ID);
         productReservationCommandHandler.handle(productReservationCommand);
+        Product product = productRepository.find(PRODUCT_ID);
+        Reservation reservation = reservationRepository.find(RESERVATION_ID);
+        Assert.assertTrue(reservation.contains(PRODUCT_ID));
+        Assert.assertTrue(product.isReserved());
     }
 }
