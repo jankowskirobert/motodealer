@@ -1,19 +1,20 @@
 package com.jvmless.shop.sales.application;
 
 import com.jvmless.shop.sales.domain.productcatalog.*;
-import com.jvmless.shop.sales.domain.reservation.InMemoryReservationRepository;
-import com.jvmless.shop.sales.domain.reservation.ReservationId;
-import com.jvmless.shop.usermanagement.InMemoryUserRepository;
-import com.jvmless.shop.sales.domain.reservation.ReservationRepository;
-import com.jvmless.shop.sales.domain.reservation.ReservationRuleFactory;
-import com.jvmless.shop.usermanagement.UserContextService;
-import com.jvmless.shop.usermanagement.UserId;
-import com.jvmless.shop.usermanagement.UserRepository;
+import com.jvmless.shop.sales.domain.reservation.*;
+import com.jvmless.shop.usermanagement.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 public class ReserveProductHandlerTest {
 
+    private final ProductId PRODUCT_ID = ProductId.of("PRODUCT_1");
+    private final UserId USER_ID = UserId.of("TEST");
+    private final ReservationId RESERVATION_ID = ReservationId.of("RESERVATION_1");
     private UserRepository userRepository = new InMemoryUserRepository();
     private ProductRepository productRepository = new InMemoryProductRepository();
     private ReservationRepository reservationRepository = new InMemoryReservationRepository();
@@ -25,15 +26,31 @@ public class ReserveProductHandlerTest {
     public void setUp() {
         productRepository.save(
                 new Product(
-                        ProductId.of("PRODUCT_1")
-                        , UserId.of("TEST")
-                        , ProductReservationPolicyType.ONLY_PREMIUM)
+                        PRODUCT_ID
+                        , USER_ID
+                        , ProductReservationPolicyType.ONLY_PREMIUM
+                )
         );
+
+        userRepository.save(
+                new User(
+                        USER_ID
+                        , new HashSet<>(Arrays.asList(UserRole.CLIENT))
+                        , UserType.PREMIUM
+                )
+        );
+
+        reservationRepository.save
+                (new Reservation(
+                                RESERVATION_ID
+                                , USER_ID
+                        )
+                );
     }
 
     @Test
     public void shouldReserveProduct() {
-        UserContextService userContextService = () -> UserId.of("TEST");
+        UserContextService userContextService = () -> USER_ID;
         ProductReservationCommandHandler productReservationCommandHandler
                 = new ProductReservationCommandHandler(
                 productRepository
@@ -43,8 +60,12 @@ public class ReserveProductHandlerTest {
                 , reservationRuleFactory
         );
         ProductReservationCommand productReservationCommand = new ProductReservationCommand();
-        productReservationCommand.setProductId(ProductId.of("PRODUCT_1"));
-        productReservationCommand.setReservationId(ReservationId.of("RESERVATION_1"));
+        productReservationCommand.setProductId(PRODUCT_ID);
+        productReservationCommand.setReservationId(RESERVATION_ID);
         productReservationCommandHandler.handle(productReservationCommand);
+        Product product = productRepository.find(PRODUCT_ID);
+        Reservation reservation = reservationRepository.find(RESERVATION_ID);
+        Assert.assertTrue(reservation.contains(PRODUCT_ID));
+        Assert.assertTrue(product.isReserved());
     }
 }

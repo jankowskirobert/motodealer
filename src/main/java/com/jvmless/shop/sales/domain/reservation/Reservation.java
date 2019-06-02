@@ -1,9 +1,11 @@
 package com.jvmless.shop.sales.domain.reservation;
 
+import com.jvmless.shop.sales.domain.productcatalog.ProductId;
 import com.jvmless.shop.usermanagement.UserId;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,16 +29,20 @@ public class Reservation {
         this.reservationRule = reservationRule;
     }
 
-    public boolean reserve(ReservationRuleFactory reservationRuleFactory) {
-        if (isActive()) {
+    public void reserve(ProductId productId, ReservationRuleFactory reservationRuleFactory) {
+        if (isActive() && !contains(productId)) {
             ReservationPolicy reservationPolicy = reservationRuleFactory.generate(reservationRule);
-            if (reservationPolicy != null)
-                if (reservationPolicy.check(reservationItems, userId)) {
-                    this.reservationItems.add(new ReservationItem());
-                    return true;
-                }
+            if (reservationPolicy.check(reservationItems, userId)) {
+                this.reservationItems.add(
+                        new ReservationItem(productId
+                                , LocalDateTime.now()
+                        )
+                );
+            }
+        } else {
+            throw new IllegalStateException("Cannot reserve, " +
+                    "you already reserved this product or reservation is inactive");
         }
-        return false;
     }
 
     public void close() {
@@ -45,12 +51,15 @@ public class Reservation {
         this.reservationStatus = ReservationStatus.CLOSED;
     }
 
-    private boolean isClosed() {
+    public boolean isClosed() {
         return !isActive();
     }
 
-    private boolean isActive() {
+    public boolean isActive() {
         return ReservationStatus.ACTIVE.equals(this.reservationStatus);
     }
 
+    public boolean contains(ProductId productId) {
+        return reservationItems.stream().anyMatch(x -> x.getProductId().equals(productId));
+    }
 }

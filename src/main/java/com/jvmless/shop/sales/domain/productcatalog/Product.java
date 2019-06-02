@@ -47,7 +47,7 @@ public class Product {
      */
     public void reserve(UserId potentialOwner, Period period, ProductReservationPolicyFactory productReservationPolicyFactory) {
         ProductReservationPolicy productReservationPolicy = productReservationPolicyFactory.generate(this.reservationPolicyType);
-        if(isAvailable() && canBeReserved(potentialOwner, productReservationPolicy)) {
+        if (isAvailable() && canBeReserved(potentialOwner, productReservationPolicy)) {
             this.status = ProductStatus.RESERVED;
             this.owner = potentialOwner;
         } else {
@@ -60,13 +60,13 @@ public class Product {
     }
 
     public void sell(UserId newOwner) {
-        switch(status) {
+        switch (status) {
             case AVAILABLE:
                 this.owner = newOwner;
                 this.status = ProductStatus.SOLD;
                 break;
             case RESERVED:
-                if(!this.owner.equals(newOwner))
+                if (!this.owner.equals(newOwner))
                     throw new IllegalArgumentException("Cannot sell product, it is currently reserved by other user");
                 else
                     this.status = ProductStatus.SOLD;
@@ -82,7 +82,7 @@ public class Product {
     }
 
     private boolean canBeReserved(UserId potentialOwner, ProductReservationPolicy productReservationPolicies) {
-        if(productReservationPolicies == null){
+        if (productReservationPolicies == null) {
             return !ProductStatus.RESERVED.equals(this.status);
         } else {
             return productReservationPolicies.canReserve(potentialOwner, productId);
@@ -90,7 +90,10 @@ public class Product {
     }
 
     public boolean isAvailable() {
-        return status.equals(ProductStatus.AVAILABLE);
+        return ProductStatus.AVAILABLE.equals(this.status);
     }
 
+    public boolean isReserved() {
+        return ProductStatus.RESERVED.equals(this.status);
+    }
 }

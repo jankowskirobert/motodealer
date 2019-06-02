@@ -1,5 +1,6 @@
 package com.jvmless.shop.sales.domain.reservation;
 
+import com.jvmless.shop.sales.domain.productcatalog.ProductId;
 import com.jvmless.shop.usermanagement.InMemoryUserRepository;
 import com.jvmless.shop.usermanagement.*;
 import org.junit.Before;
@@ -20,7 +21,8 @@ public class ReservationTest {
 
     @Test
     public void shouldBeAvailableToReserve() {
+        ProductId productId = ProductId.generate();
         Reservation reservation = new Reservation(ReservationId.of("RESERVATION_1"), UserId.of("USER_1"));
-        reservation.reserve(reservationRuleFactory);
+        reservation.reserve(productId, reservationRuleFactory);
     }
 }

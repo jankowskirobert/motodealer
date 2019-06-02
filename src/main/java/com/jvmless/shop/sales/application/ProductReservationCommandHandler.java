@@ -1,6 +1,7 @@
 package com.jvmless.shop.sales.application;
 
 import com.jvmless.shop.sales.domain.productcatalog.Product;
+import com.jvmless.shop.sales.domain.productcatalog.ProductId;
 import com.jvmless.shop.sales.domain.productcatalog.ProductRepository;
 import com.jvmless.shop.sales.domain.productcatalog.ProductReservationPolicyFactory;
 import com.jvmless.shop.sales.domain.reservation.*;
@@ -17,20 +18,40 @@ public class ProductReservationCommandHandler {
     private ProductReservationPolicyFactory productReservationPolicyFactory;
     private ReservationRuleFactory reservationRuleFactory;
 
-    public void handle(ProductReservationCommand productReservationCommand) {
+    public ReservationId handle(ProductReservationCommand productReservationCommand) {
         UserId currentUserId = userContextService.getCurrentUserId();
-        if(currentUserId == null)
-            throw new IllegalStateException("User is not exists!");
-        Product product = productRepository.find(productReservationCommand.getProductId());
-        if(product == null)
-            throw new IllegalArgumentException("Product does not exist!");
-        Reservation reservation = reservationRepository.find(productReservationCommand.getReservationId());
-        if (reservation == null) {
-            reservation = new Reservation(ReservationId.random(), currentUserId);
+        if (currentUserId == null)
+            throw new IllegalStateException("User not found!");
+        ReservationId reservationId = productReservationCommand.getReservationId();
+        Reservation reservation = null;
+        if (reservationId == null) {
+            ReservationId newReservationId = ReservationId.random();
+            Reservation exists = reservationRepository.find(newReservationId);
+            if (exists == null) {
+                reservation = new Reservation(newReservationId, currentUserId);
+                reservationId = newReservationId;
+            }
+        } else {
+            reservation = reservationRepository.find(reservationId);
+            if (reservation == null) {
+                throw new IllegalArgumentException("Reservation not found!");
+            }
         }
-        reservation.reserve(reservationRuleFactory);
-
+        ProductId productId = productReservationCommand.getProductId();
+        reserveProduct(productId, reservation);
+        Product product = productRepository.find(productId);
+        if (product == null)
+            throw new IllegalArgumentException("Product does not exist!");
         product.reserve(currentUserId, productReservationPolicyFactory);
-
+        return reservationId;
     }
+
+    private void reserveProduct(ProductId productId, Reservation reservation) {
+        if (reservation.isActive())
+            reservation.reserve(productId, reservationRuleFactory);
+        else
+            throw new IllegalStateException("Reservation is already closed");
+    }
+
+
 }
