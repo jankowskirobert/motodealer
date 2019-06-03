@@ -42,7 +42,7 @@ public class ProductReservationCommandHandler {
             }
             try {
                 ProductId productId = productReservationCommand.getProductId();
-                reserveProduct(productId, reservation);
+                reservation.reserve(productId, reservationRuleFactory);
                 Product product = productRepository.find(productId);
                 if (product == null)
                     throw new IllegalArgumentException("Product does not exist!");
@@ -53,13 +53,5 @@ public class ProductReservationCommandHandler {
             }
             return reservationId;
     }
-
-    private void reserveProduct(ProductId productId, Reservation reservation) {
-        if (reservation.isActive())
-            reservation.reserve(productId, reservationRuleFactory);
-        else
-            throw new IllegalStateException("Reservation is already closed");
-    }
-
 
 }
