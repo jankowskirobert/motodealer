@@ -1,10 +1,11 @@
 package com.jvmless.shop.sales.application;
 
 import com.jvmless.shop.core.DomainException;
+import com.jvmless.shop.sales.application.command.ProductReservationCommand;
+import com.jvmless.shop.sales.application.handler.ProductReservationCommandHandler;
 import com.jvmless.shop.sales.domain.productcatalog.*;
 import com.jvmless.shop.sales.domain.reservation.*;
 import com.jvmless.shop.usermanagement.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

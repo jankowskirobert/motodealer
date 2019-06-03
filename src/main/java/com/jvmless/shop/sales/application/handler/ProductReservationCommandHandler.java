@@ -1,6 +1,7 @@
-package com.jvmless.shop.sales.application;
+package com.jvmless.shop.sales.application.handler;
 
 import com.jvmless.shop.core.DomainException;
+import com.jvmless.shop.sales.application.command.ProductReservationCommand;
 import com.jvmless.shop.sales.domain.productcatalog.Product;
 import com.jvmless.shop.sales.domain.productcatalog.ProductId;
 import com.jvmless.shop.sales.domain.productcatalog.ProductRepository;
