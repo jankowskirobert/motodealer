@@ -15,4 +15,9 @@ public class InMemoryReservationRepository implements ReservationRepository {
     public Reservation find(ReservationId reservationId) {
         return inMemory.get(reservationId);
     }
+
+    @Override
+    public void clear() {
+        inMemory.clear();
+    }
 }

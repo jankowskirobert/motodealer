@@ -32,6 +32,7 @@ public class ProductReservationCommandHandler {
                 Reservation exists = reservationRepository.find(newReservationId);
                 if (exists == null) {
                     reservation = new Reservation(newReservationId, currentUserId);
+                    reservationRepository.save(reservation);
                     reservationId = newReservationId;
                 }
             } else {

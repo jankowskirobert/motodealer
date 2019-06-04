@@ -15,4 +15,9 @@ public class InMemoryProductRepository implements ProductRepository {
     public Product find(ProductId productId) {
         return inMemory.get(productId);
     }
+
+    @Override
+    public void clear() {
+        inMemory.clear();
+    }
 }
