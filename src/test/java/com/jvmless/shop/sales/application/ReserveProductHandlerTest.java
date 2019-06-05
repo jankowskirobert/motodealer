@@ -85,8 +85,8 @@ public class ReserveProductHandlerTest {
         productReservationCommand = new ProductReservationCommand();
         productReservationCommand.setProductId(PRODUCT_ID_ALL);
         productReservationCommandHandler.handle(productReservationCommand);
-
     }
+
     @Test()
     public void shouldReserveProduct2() {
         UserContextService userContextService = () -> USER_ID_PREMIUM;
@@ -98,6 +98,7 @@ public class ReserveProductHandlerTest {
         Reservation reservation = reservationRepository.find(reservationId);
         Assert.assertTrue(reservation.isActive());
     }
+
     @Test(expected = DomainException.class)
     public void shouldReserveProduct3() {
         UserContextService userContextService = () -> USER_ID_STANDARD;
@@ -106,6 +107,7 @@ public class ReserveProductHandlerTest {
         productReservationCommand.setProductId(PRODUCT_ID_PREMIUM);
         productReservationCommandHandler.handle(productReservationCommand);
     }
+
     private ProductReservationCommandHandler getProductReservationCommandHandler(UserContextService userContextService) {
         return new ProductReservationCommandHandler(
                 productRepository
