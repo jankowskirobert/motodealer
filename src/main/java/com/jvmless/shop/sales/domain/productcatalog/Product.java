@@ -45,24 +45,35 @@ public class Product {
         }
     }
 
+    public void cancelReservation() {
+        if (isReserved()) {
+            this.owner = null;
+            this.status = ProductStatus.AVAILABLE;
+        } else if (isAvailable()) {
+            throw new DomainException("Product is currently not reserved");
+        } else if (isSold()) {
+            throw new DomainException("Cannot cancel reservation, product is sold");
+        }
+    }
+
+    private boolean isSold() {
+        return ProductStatus.SOLD.equals(this.status);
+    }
+
     public void close(UserId userId) {
         //only if sold
     }
 
     public void sell(UserId newOwner) {
-        switch (status) {
-            case AVAILABLE:
-                this.owner = newOwner;
-                this.status = ProductStatus.SOLD;
-                break;
-            case RESERVED:
-                if (!this.owner.equals(newOwner))
-                    throw new IllegalArgumentException("Cannot sell product, it is currently reserved by other user");
-                else
-                    this.status = ProductStatus.SOLD;
-                break;
-            default:
-                throw new IllegalStateException("Product cannot be sold");
+        if (isReserved() && newOwner.equals(this.owner)) {
+            //one more validation
+
+            this.status = ProductStatus.SOLD;
+        } else if (isAvailable()) {
+            this.owner = newOwner;
+            this.status = ProductStatus.SOLD;
+        } else if (isSold()) {
+            throw new DomainException("Cannot cancel sell, product is already sold");
         }
     }
 
@@ -88,7 +99,7 @@ public class Product {
     }
 
     public void updateDetails(MotorcycleTechnicalDetails motorcycleTechnicalDetails) {
-        if(isAvailable()){
+        if (isAvailable()) {
             this.motorcycleTechnicalDetails = motorcycleTechnicalDetails;
         }
     }
