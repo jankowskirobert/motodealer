@@ -12,7 +12,8 @@ import java.util.HashSet;
 public class ReservationTest {
 
     UserRepository userRepository = new InMemoryUserRepository();
-    ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository);
+    ReservationRepository reservationRepository = new InMemoryReservationRepository();
+    ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository, reservationRepository);
 
     @Before
     public void setUp() {

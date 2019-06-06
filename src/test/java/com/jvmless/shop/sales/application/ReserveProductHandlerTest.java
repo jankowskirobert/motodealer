@@ -29,7 +29,7 @@ public class ReserveProductHandlerTest {
     private ProductRepository productRepository = new InMemoryProductRepository();
     private ReservationRepository reservationRepository = new InMemoryReservationRepository();
     private ProductReservationPolicyFactory productReservationPolicyFactory = new ProductReservationPolicyFactory(userRepository);
-    private ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository);
+    private ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository, reservationRepository);
 
 
     @Before
@@ -37,14 +37,12 @@ public class ReserveProductHandlerTest {
         productRepository.save(
                 new Product(
                         PRODUCT_ID_PREMIUM
-                        , null
                         , ProductReservationPolicyType.ONLY_PREMIUM
                 )
         );
         productRepository.save(
                 new Product(
                         PRODUCT_ID_ALL
-                        , null
                         , ProductReservationPolicyType.ALL
                 )
         );

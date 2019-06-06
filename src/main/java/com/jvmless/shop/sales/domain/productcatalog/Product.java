@@ -17,20 +17,18 @@ public class Product {
     @Id
     private ProductId productId;
     private ProductReservationPolicyType reservationPolicyType;
-    private UserId owner;
+    private UserId owner = null;
     private ProductStatus status;
     private MotorcycleTechnicalDetails motorcycleTechnicalDetails;
 
-    public Product(ProductId productId, UserId owner) {
+    public Product(ProductId productId) {
         this.productId = productId;
-        this.owner = owner;
         this.status = ProductStatus.AVAILABLE;
         this.reservationPolicyType = ProductReservationPolicyType.ALL;
     }
 
-    public Product(ProductId productId, UserId owner, ProductReservationPolicyType productReservationPolicyType) {
+    public Product(ProductId productId, ProductReservationPolicyType productReservationPolicyType) {
         this.productId = productId;
-        this.owner = owner;
         this.status = ProductStatus.AVAILABLE;
         this.reservationPolicyType = productReservationPolicyType;
     }
@@ -66,14 +64,14 @@ public class Product {
 
     public void sell(UserId newOwner) {
         if (isReserved() && newOwner.equals(this.owner)) {
-            //one more validation
 
             this.status = ProductStatus.SOLD;
+
         } else if (isAvailable()) {
             this.owner = newOwner;
             this.status = ProductStatus.SOLD;
-        } else if (isSold()) {
-            throw new DomainException("Cannot cancel sell, product is already sold");
+        } else {
+            throw new DomainException("Cannot cancel sell, product is unavailable");
         }
     }
 

@@ -21,7 +21,7 @@ public class AcceptanceReserveProductHandlerTest {
     private ProductRepository productRepository = new InMemoryProductRepository();
     private ReservationRepository reservationRepository = new InMemoryReservationRepository();
     private ProductReservationPolicyFactory productReservationPolicyFactory = new ProductReservationPolicyFactory(userRepository);
-    private ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository);
+    private ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository, reservationRepository);
 
 
     @Before
@@ -29,7 +29,6 @@ public class AcceptanceReserveProductHandlerTest {
         productRepository.save(
                 new Product(
                         PRODUCT_ID
-                        , USER_ID
                         , ProductReservationPolicyType.ONLY_PREMIUM
                 )
         );
