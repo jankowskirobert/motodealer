@@ -29,7 +29,7 @@ public class ReserveProductHandlerTest {
     private ProductRepository productRepository = new InMemoryProductRepository();
     private ReservationRepository reservationRepository = new InMemoryReservationRepository();
     private ProductReservationPolicyFactory productReservationPolicyFactory = new ProductReservationPolicyFactory(userRepository);
-    private ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository, reservationRepository);
+    private ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository);
 
 
     @Before

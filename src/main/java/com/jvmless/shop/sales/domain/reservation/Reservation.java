@@ -30,10 +30,9 @@ public class Reservation {
         this.reservationRule = reservationRule;
     }
 
-    public void reserve(ProductId productId, ReservationRuleFactory reservationRuleFactory) {
+    public void reserve(ProductId productId, ReservationPolicy reservationPolicy) {
         if (isActive() && !contains(productId)) {
-            ReservationPolicy reservationPolicy = reservationRuleFactory.generate(reservationRule);
-            if (reservationPolicy.check(reservationItems, userId)) {
+            if (reservationPolicy.check()) {
                 this.reservationItems.add(
                         new ReservationItem(productId
                                 , LocalDateTime.now()

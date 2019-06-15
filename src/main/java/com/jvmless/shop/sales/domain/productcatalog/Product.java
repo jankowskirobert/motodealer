@@ -33,9 +33,8 @@ public class Product {
         this.reservationPolicyType = productReservationPolicyType;
     }
 
-    public void reserve(UserId potentialOwner, Period period, ProductReservationPolicyFactory productReservationPolicyFactory) {
-        ProductReservationPolicy productReservationPolicy = productReservationPolicyFactory.generate(this.reservationPolicyType);
-        if (isAvailable() && canBeReserved(potentialOwner, productReservationPolicy)) {
+    public void reserve(UserId potentialOwner, Period period, ProductReservationPolicy productReservationPolicy) {
+        if (isAvailable() && canBeReserved(productReservationPolicy)) {
             this.status = ProductStatus.RESERVED;
             this.owner = potentialOwner;
         } else {
@@ -75,16 +74,16 @@ public class Product {
         }
     }
 
-    public void reserve(UserId potentialOwner, ProductReservationPolicyFactory productReservationPolicyFactory) {
+    public void reserve(UserId potentialOwner, ProductReservationPolicy productReservationPolicy) {
         Period defaultPeriod = Period.ofDays(7);
-        reserve(potentialOwner, defaultPeriod, productReservationPolicyFactory);
+        reserve(potentialOwner, defaultPeriod, productReservationPolicy);
     }
 
-    private boolean canBeReserved(UserId potentialOwner, ProductReservationPolicy productReservationPolicies) {
+    private boolean canBeReserved(ProductReservationPolicy productReservationPolicies) {
         if (productReservationPolicies == null) {
             return !ProductStatus.RESERVED.equals(this.status);
         } else {
-            return productReservationPolicies.canReserve(potentialOwner, productId);
+            return productReservationPolicies.canReserve();
         }
     }
 

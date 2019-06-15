@@ -11,19 +11,25 @@ import java.util.HashSet;
 
 public class ReservationTest {
 
+    private final UserId PREMIUM_USER_ID = UserId.of("PREMIUM_USER");
     UserRepository userRepository = new InMemoryUserRepository();
     ReservationRepository reservationRepository = new InMemoryReservationRepository();
-    ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository, reservationRepository);
+    ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository);
 
     @Before
     public void setUp() {
-        userRepository.save(new User(UserId.of("PREMIUM_USER"),new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM));
+        userRepository.save(new User(PREMIUM_USER_ID,new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM));
     }
 
     @Test
     public void shouldBeAvailableToReserve() {
         ProductId productId = ProductId.generate();
         Reservation reservation = new Reservation(ReservationId.of("RESERVATION_1"), UserId.of("USER_1"));
-        reservation.reserve(productId, reservationRuleFactory);
+        ReservationPolicy reservationPolicy = reservationRuleFactory.generate(
+                reservation.getReservationRule(),
+                reservation.getReservationItems(),
+                PREMIUM_USER_ID
+        );
+        reservation.reserve(productId, reservationPolicy);
     }
 }

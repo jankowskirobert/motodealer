@@ -23,7 +23,9 @@ public class ProductTest {
     @Test
     public void shouldBeUnavailableToReserve_currentlyReserved() {
         Product product = new Product(ProductId.generate(), ProductReservationPolicyType.ONLY_PREMIUM);
-        product.reserve(UserId.of("PREMIUM_USER"), productReservationPolicyFactory);
+        UserId premium_user = UserId.of("PREMIUM_USER");
+        ProductReservationPolicy productReservationPolicy = productReservationPolicyFactory.generate(ProductReservationPolicyType.ONLY_PREMIUM, premium_user);
+        product.reserve(premium_user, productReservationPolicy);
         boolean result = product.isAvailable();
         Assert.assertFalse(result);
     }
@@ -38,12 +40,14 @@ public class ProductTest {
     @Test(expected = DomainException.class)
     public void shouldThrowExceptionOnReservation_productAlreadyReserved() {
         Product product = new Product(ProductId.generate(), ProductReservationPolicyType.ONLY_PREMIUM);
+        UserId premium_user = UserId.of("PREMIUM_USER");
+        ProductReservationPolicy productReservationPolicy = productReservationPolicyFactory.generate(ProductReservationPolicyType.ONLY_PREMIUM, premium_user);
         boolean available = product.isAvailable();
         Assert.assertTrue(available);
-        product.reserve(UserId.of("PREMIUM_USER"), productReservationPolicyFactory);
+        product.reserve(UserId.of("PREMIUM_USER"), productReservationPolicy);
         boolean reserved = product.isAvailable();
         Assert.assertFalse(reserved);
-        product.reserve(UserId.of("PREMIUM_USER"), productReservationPolicyFactory);
+        product.reserve(UserId.of("PREMIUM_USER"), productReservationPolicy);
         //error
     }
 
@@ -54,8 +58,10 @@ public class ProductTest {
     }
     @Test
     public void shouldSellProduct_reservationFirst() {
+        UserId premium_user = UserId.of("PREMIUM_USER");
+        ProductReservationPolicy productReservationPolicy = productReservationPolicyFactory.generate(ProductReservationPolicyType.ONLY_PREMIUM, premium_user);
         Product product = new Product(ProductId.generate(), ProductReservationPolicyType.ONLY_PREMIUM);
-        product.reserve(UserId.of("PREMIUM_USER"), productReservationPolicyFactory);
+        product.reserve(UserId.of("PREMIUM_USER"), productReservationPolicy);
         product.sell(UserId.of("PREMIUM_USER"));
     }
 }

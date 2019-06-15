@@ -6,15 +6,16 @@ import java.util.Set;
 
 public class MaxReservationsPolicy implements ReservationPolicy {
 
-    private final UserRepository userRepository;
+    private final Set<ReservationItem> reservationItems;
+    private final User potentialOwner;
 
-    public MaxReservationsPolicy(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public MaxReservationsPolicy(Set<ReservationItem> reservationItems, User potentialOwner) {
+        this.reservationItems = reservationItems;
+        this.potentialOwner = potentialOwner;
     }
 
     @Override
-    public boolean check(Set<ReservationItem> reservationItems, UserId userId) {
-        User potentialOwner = userRepository.find(userId);
+    public boolean check() {
         if (potentialOwner != null)
             if (potentialOwner.is(UserType.STANDARD_BUYER)) {
                 if (reservationItems.isEmpty() || reservationItems.size() < 3) {

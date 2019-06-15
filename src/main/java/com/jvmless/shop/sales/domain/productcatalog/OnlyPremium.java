@@ -10,14 +10,11 @@ import lombok.Data;
 @Data
 public class OnlyPremium implements ProductReservationPolicy {
 
-    private UserRepository userRepository;
+    private User potentialOwner;
 
     @Override
-    public boolean canReserve(UserId potentialOwner, ProductId productId) {
-        User user = userRepository.find(potentialOwner);
-        if (user == null)
-            return false;
-        boolean result = user.is(UserType.PREMIUM);
+    public boolean canReserve() {
+        boolean result = potentialOwner.is(UserType.PREMIUM);
         return result;
     }
 }
