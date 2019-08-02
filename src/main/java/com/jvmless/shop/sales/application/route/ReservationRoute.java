@@ -20,9 +20,6 @@ public class ReservationRoute extends RouteBuilder {
         from("restlet:{{base.url}}/reserve?restletMethod=post")
                 .unmarshal()
                 .json(JsonLibrary.Jackson)
-                .process(exchange -> {
-                    productReservationCommandHandler.handle(exchange.getIn().getBody(ProductReservationCommand.class));
-                });
-
+                .process(productReservationCommandHandler);
     }
 }

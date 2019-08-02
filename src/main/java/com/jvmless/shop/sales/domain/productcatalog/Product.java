@@ -5,20 +5,27 @@ import com.jvmless.shop.usermanagement.UserId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
 
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import java.io.Serializable;
 import java.time.Period;
 
 @Accessors(fluent = true)
 @Getter
 @EqualsAndHashCode(of = "productId")
-public class Product {
+@Entity
+public class Product implements Serializable {
 
-    @Id
+    @EmbeddedId
     private ProductId productId;
     private ProductReservationPolicyType reservationPolicyType;
     private UserId owner = null;
     private ProductStatus status;
+    @MapsId("catalogNumber")
+    @OneToOne
     private MotorcycleTechnicalDetails motorcycleTechnicalDetails;
 
     public Product(ProductId productId) {

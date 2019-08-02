@@ -3,7 +3,6 @@ package com.jvmless.shop.sales.domain.productcatalog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component("productRepository")
 class RDBProductRepositoryAdapter implements ProductRepository {
 
     private final RDBProductRepository productRepository;

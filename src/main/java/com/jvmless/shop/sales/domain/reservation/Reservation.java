@@ -4,16 +4,20 @@ import com.jvmless.shop.core.DomainException;
 import com.jvmless.shop.sales.domain.productcatalog.ProductId;
 import com.jvmless.shop.usermanagement.UserId;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-public class Reservation {
-    @Id
+@Entity
+public class Reservation implements Serializable {
+    @EmbeddedId
     private ReservationId reservationId;
+    @OneToMany
+    @JoinColumn(name = "itemId")
     private Set<ReservationItem> reservationItems = new HashSet<>();
     private ReservationRule reservationRule;
     private UserId userId;

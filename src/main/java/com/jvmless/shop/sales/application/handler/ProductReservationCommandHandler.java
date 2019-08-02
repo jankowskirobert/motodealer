@@ -8,10 +8,12 @@ import com.jvmless.shop.usermanagement.UserContextService;
 import com.jvmless.shop.usermanagement.UserId;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 
 @Slf4j
 @AllArgsConstructor
-public class ProductReservationCommandHandler {
+public class ProductReservationCommandHandler implements Processor {
 
     private ProductRepository productRepository;
     private UserContextService userContextService;
@@ -62,4 +64,10 @@ public class ProductReservationCommandHandler {
         return reservationId;
     }
 
+    @Override
+    public void process(Exchange exchange) throws Exception {
+        ProductReservationCommand productReservationCommand = exchange.getIn().getBody(ProductReservationCommand.class);
+        ReservationId reservationId = this.handle(productReservationCommand);
+        exchange.getIn().setHeader("reservation_id", reservationId);
+    }
 }

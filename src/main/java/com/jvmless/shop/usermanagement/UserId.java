@@ -3,12 +3,15 @@ package com.jvmless.shop.usermanagement;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
+import javax.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.Objects;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-public class UserId {
+@Embeddable
+public class UserId implements Serializable {
 
-    private String id;
+    private String userId;
 
     public static UserId of(String id) {
         return new UserId(id);
@@ -19,11 +22,11 @@ public class UserId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserId userId = (UserId) o;
-        return Objects.equals(id, userId.id);
+        return Objects.equals(this.userId, userId.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(userId);
     }
 }

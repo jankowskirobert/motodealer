@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id")
-public class ProductId {
+@Embeddable
+public class ProductId implements Serializable {
     private String id;
 
     public static ProductId generate() {
