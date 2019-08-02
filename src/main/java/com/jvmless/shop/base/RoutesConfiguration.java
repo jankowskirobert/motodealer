@@ -9,6 +9,7 @@ import com.jvmless.shop.sales.domain.reservation.ReservationRepository;
 import com.jvmless.shop.sales.domain.reservation.ReservationRuleFactory;
 import com.jvmless.shop.usermanagement.UserContextService;
 import com.jvmless.shop.usermanagement.UserRepository;
+import org.apache.camel.spi.RestConfiguration;
 import org.springframework.context.annotation.*;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
