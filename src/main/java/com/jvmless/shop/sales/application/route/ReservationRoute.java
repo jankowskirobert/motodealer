@@ -20,7 +20,7 @@ public class ReservationRoute extends RouteBuilder {
     public void configure() throws Exception {
         restConfiguration()
                 .component("netty4-http")
-//                .port("8081")
+                .port("8081")
 //                .contextPath("/api")
                 .bindingMode(RestBindingMode.auto);
 

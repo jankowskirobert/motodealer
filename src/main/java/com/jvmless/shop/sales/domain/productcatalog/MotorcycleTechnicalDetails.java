@@ -1,24 +1,21 @@
 package com.jvmless.shop.sales.domain.productcatalog;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-/*
-Motorcycle details is an entity because can represent unique set of manageable values
- */
+import javax.persistence.Embeddable;
+
 @Getter
-@Entity
+@Embeddable
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class MotorcycleTechnicalDetails {
 
     private String vin;
 //    private TireSpecificationId tireSpecificationId;
 //    @Id
-    @EmbeddedId
-    private MotorcycleTechnicalDetailsId motorcycleTechnicalDetailsId;
 
 //    public static MotorcycleTechnicalDetails of(MotorcycleDetails motorcycleDetails) {
 //        return null;

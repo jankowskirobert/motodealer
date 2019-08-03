@@ -2,15 +2,10 @@ package com.jvmless.shop.sales.domain.productcatalog;
 
 import com.jvmless.shop.core.DomainException;
 import com.jvmless.shop.usermanagement.UserId;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 import lombok.experimental.Accessors;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Period;
 
@@ -18,6 +13,7 @@ import java.time.Period;
 @Getter
 @EqualsAndHashCode(of = "productId")
 @Entity
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class Product implements Serializable {
 
     @EmbeddedId
@@ -25,14 +21,14 @@ public class Product implements Serializable {
     private ProductReservationPolicyType reservationPolicyType;
     private UserId owner = null;
     private ProductStatus status;
-    @MapsId("catalogNumber")
-    @OneToOne
+    @Embedded
     private MotorcycleTechnicalDetails motorcycleTechnicalDetails;
 
     public Product(ProductId productId) {
         this.productId = productId;
         this.status = ProductStatus.AVAILABLE;
         this.reservationPolicyType = ProductReservationPolicyType.ALL;
+        this.motorcycleTechnicalDetails = new MotorcycleTechnicalDetails();
     }
 
     public Product(ProductId productId, ProductReservationPolicyType productReservationPolicyType) {
