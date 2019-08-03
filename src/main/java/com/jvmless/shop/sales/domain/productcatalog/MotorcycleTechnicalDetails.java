@@ -6,7 +6,9 @@ import lombok.Getter;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
+/*
+Motorcycle details is an entity because can represent unique set of manageable values
+ */
 @Getter
 @Entity
 @AllArgsConstructor

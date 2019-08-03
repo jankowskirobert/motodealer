@@ -4,6 +4,7 @@ import com.jvmless.shop.core.DomainException;
 import com.jvmless.shop.usermanagement.UserId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.experimental.Accessors;
 
 import javax.persistence.EmbeddedId;
@@ -40,15 +41,6 @@ public class Product implements Serializable {
         this.reservationPolicyType = productReservationPolicyType;
     }
 
-    public void reserve(UserId potentialOwner, Period period, ProductReservationPolicy productReservationPolicy) {
-        if (isAvailable() && canBeReserved(productReservationPolicy)) {
-            this.status = ProductStatus.RESERVED;
-            this.owner = potentialOwner;
-        } else {
-            throw new DomainException("Product cannot be reserved");
-        }
-    }
-
     public void cancelReservation() {
         if (isReserved()) {
             this.owner = null;
@@ -68,7 +60,15 @@ public class Product implements Serializable {
         //only if sold
     }
 
-    public void sell(UserId newOwner) {
+    public void updateReservationPoicy(@NonNull ProductReservationPolicyType productReservationPolicyType) {
+        if(isAvailable()) {
+            this.reservationPolicyType = productReservationPolicyType;
+        } else {
+            throw new IllegalStateException("Product data is unable to update in current state");
+        }
+    }
+
+    public void sell(@NonNull UserId newOwner) {
         if (isReserved() && newOwner.equals(this.owner)) {
 
             this.status = ProductStatus.SOLD;
@@ -81,9 +81,13 @@ public class Product implements Serializable {
         }
     }
 
-    public void reserve(UserId potentialOwner, ProductReservationPolicy productReservationPolicy) {
-        Period defaultPeriod = Period.ofDays(7);
-        reserve(potentialOwner, defaultPeriod, productReservationPolicy);
+    public void reserve(@NonNull UserId potentialOwner, @NonNull ProductReservationPolicy productReservationPolicy) {
+        if (isAvailable() && canBeReserved(productReservationPolicy)) {
+            this.status = ProductStatus.RESERVED;
+            this.owner = potentialOwner;
+        } else {
+            throw new DomainException("Product cannot be reserved");
+        }
     }
 
     private boolean canBeReserved(ProductReservationPolicy productReservationPolicies) {
@@ -102,7 +106,7 @@ public class Product implements Serializable {
         return ProductStatus.RESERVED.equals(this.status);
     }
 
-    public void updateDetails(MotorcycleTechnicalDetails motorcycleTechnicalDetails) {
+    public void updateDetails(@NonNull MotorcycleTechnicalDetails motorcycleTechnicalDetails) {
         if (isAvailable()) {
             this.motorcycleTechnicalDetails = motorcycleTechnicalDetails;
         }

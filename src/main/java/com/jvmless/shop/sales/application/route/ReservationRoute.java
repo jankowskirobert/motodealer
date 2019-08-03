@@ -5,9 +5,7 @@ import com.jvmless.shop.sales.application.handler.ProductReservationCommandHandl
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.bean.validator.BeanValidationException;
-import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.model.rest.RestBindingMode;
-import org.apache.camel.spi.RestConfiguration;
 
 public class ReservationRoute extends RouteBuilder {
 
@@ -22,8 +20,8 @@ public class ReservationRoute extends RouteBuilder {
     public void configure() throws Exception {
         restConfiguration()
                 .component("netty4-http")
-        .port("8081")
-        .contextPath("/api")
+//                .port("8081")
+//                .contextPath("/api")
                 .bindingMode(RestBindingMode.auto);
 
         rest("/product")
