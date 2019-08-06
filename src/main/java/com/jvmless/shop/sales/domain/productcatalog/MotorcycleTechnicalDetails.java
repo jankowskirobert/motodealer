@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 
 @Getter
-@Embeddable
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class MotorcycleTechnicalDetails {
+@Entity
+public class MotorcycleTechnicalDetails extends ProductDetail {
 
     private String vin;
 //    private TireSpecificationId tireSpecificationId;
