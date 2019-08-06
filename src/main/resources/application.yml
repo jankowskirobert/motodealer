@@ -1,6 +1,16 @@
 datasource:
-  url: jdbc:h2:mem:kanapkawdrodze;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+  url: jdbc:h2:mem:pcatalog
+  username: sa
+  password: pass
+  driverClassName: org.h2.Driver
 
 base:
   url: localhost
-
+server:
+  port: 8091
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
