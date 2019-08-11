@@ -16,13 +16,12 @@ public class InMemoryUserRepository implements UserRepository {
         return inMemory.get(userId);
     }
 
-    @Override
-    public void save(User user) {
-        inMemory.put(user.getUserId(), user);
-    }
 
-    @Override
     public void clear() {
         inMemory.clear();
+    }
+
+    public void save(User user) {
+        inMemory.put(user.getUserId(), user);
     }
 }
