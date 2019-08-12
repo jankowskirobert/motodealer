@@ -12,7 +12,7 @@ import java.util.HashSet;
 public class ReservationTest {
 
     private final UserId PREMIUM_USER_ID = UserId.of("PREMIUM_USER");
-    UserRepository userRepository = new InMemoryUserRepository();
+    InMemoryUserRepository userRepository = new InMemoryUserRepository();
     ReservationRepository reservationRepository = new InMemoryReservationRepository();
     ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository);
 

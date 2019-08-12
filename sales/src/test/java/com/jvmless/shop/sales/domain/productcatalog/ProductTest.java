@@ -12,7 +12,7 @@ import java.util.HashSet;
 
 public class ProductTest {
 
-    private UserRepository userRepository = new InMemoryUserRepository();
+    private InMemoryUserRepository userRepository = new InMemoryUserRepository();
     private ProductReservationPolicyFactory productReservationPolicyFactory = new ProductReservationPolicyFactory(userRepository);
 
     @Before

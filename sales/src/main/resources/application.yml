@@ -1,8 +1,3 @@
-datasource:
-  url: jdbc:h2:mem:pcatalog
-  username: sa
-  password: pass
-  driverClassName: org.h2.Driver
 
 base:
   url: localhost
@@ -14,3 +9,8 @@ spring:
   h2:
     console:
       enabled: true
+  datasource:
+    url: jdbc:h2:mem:pcatalog
+    username: sa
+    password: pass
+    driverClassName: org.h2.Driver

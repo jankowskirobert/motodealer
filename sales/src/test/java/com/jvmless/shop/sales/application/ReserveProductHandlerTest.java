@@ -25,7 +25,7 @@ public class ReserveProductHandlerTest {
     private final UserId USER_ID_PREMIUM = UserId.of("TEST_PREMIUM");
 
     private final ReservationId RESERVATION_ID = ReservationId.of("RESERVATION_1");
-    private UserRepository userRepository = new InMemoryUserRepository();
+    private InMemoryUserRepository userRepository = new InMemoryUserRepository();
     private ProductRepository productRepository = new InMemoryProductRepository();
     private ReservationRepository reservationRepository = new InMemoryReservationRepository();
     private ProductReservationPolicyFactory productReservationPolicyFactory = new ProductReservationPolicyFactory(userRepository);
