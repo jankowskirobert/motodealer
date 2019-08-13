@@ -57,7 +57,7 @@ public class Product implements Serializable {
     }
 
     public void updateReservationPoicy(@NonNull ProductReservationPolicyType productReservationPolicyType) {
-        if(isAvailable()) {
+        if (isAvailable()) {
             this.reservationPolicyType = productReservationPolicyType;
         } else {
             throw new IllegalStateException("Product data is unable to update in current state");

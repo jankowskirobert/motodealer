@@ -6,6 +6,7 @@ import com.jvmless.shop.usermanagement.UserRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
+
 @Component
 public class InMemoryUserRepository implements UserRepository {
 

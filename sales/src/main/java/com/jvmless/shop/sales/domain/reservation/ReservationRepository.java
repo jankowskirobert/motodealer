@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ReservationRepository {
     void save(Reservation reservation);
+
     Reservation find(ReservationId reservationId);
 
     void clear();

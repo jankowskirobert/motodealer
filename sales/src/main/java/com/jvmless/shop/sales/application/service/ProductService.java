@@ -5,5 +5,6 @@ import com.jvmless.shop.sales.application.dto.UpdateProductData;
 
 public interface ProductService {
     void updateProductData(UpdateProductData motorcycleTechnicalDetails);
+
     void addProduct(AddProductDto addProductDto);
 }

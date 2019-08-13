@@ -17,7 +17,7 @@ public class ProductTest {
 
     @Before
     public void setUp() {
-        userRepository.save(new User(UserId.of("PREMIUM_USER"),new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM));
+        userRepository.save(new User(UserId.of("PREMIUM_USER"), new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM));
     }
 
     @Test
@@ -56,6 +56,7 @@ public class ProductTest {
         Product product = new Product(ProductId.generate(), ProductReservationPolicyType.ONLY_PREMIUM);
         product.sell(UserId.of("TEST_BUYER"));
     }
+
     @Test
     public void shouldSellProduct_reservationFirst() {
         UserId premium_user = UserId.of("PREMIUM_USER");

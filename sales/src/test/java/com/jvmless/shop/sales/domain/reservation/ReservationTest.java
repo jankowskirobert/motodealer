@@ -18,7 +18,7 @@ public class ReservationTest {
 
     @Before
     public void setUp() {
-        userRepository.save(new User(PREMIUM_USER_ID,new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM));
+        userRepository.save(new User(PREMIUM_USER_ID, new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM));
     }
 
     @Test

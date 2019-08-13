@@ -12,6 +12,7 @@ public class UpdateProductData {
     private ProductId productId;
     private String vin;
     private int mileage;
+
     public MotorcycleTechnicalDetails getMotorcycleData() {
         return null;
     }

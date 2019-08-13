@@ -3,4 +3,4 @@ services:
   sales:
     build: sales
     ports:
-     - 7000:7000
+      - 7000:7000

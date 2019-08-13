@@ -12,6 +12,7 @@ import java.util.UUID;
 @Embeddable
 public class ReservationId implements Serializable {
     private String id;
+
     public static ReservationId random() {
         return new ReservationId(UUID.randomUUID().toString());
     }

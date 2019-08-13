@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 public class ProductReservationPolicyFactory {
 
     private UserRepository userRepository;
+
     // uciecie zaleznosci, w takim wypadku sposob ladowania polityk moze byc uniezaleniony od sposobu pozyskania Usera
     // moze to byc repo moze to byc api
     public ProductReservationPolicy generate(ProductReservationPolicyType reservationPolicyType, UserId potentialOwner) {
