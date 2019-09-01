@@ -21,6 +21,9 @@ public class ProductReservationCommandHandler implements Processor {
     private ProductReservationPolicyFactory productReservationPolicyFactory;
     private ReservationRuleFactory reservationRuleFactory;
 
+    /*
+    TODO: klient moze miec tylko jedna otwarta rezerwacje w systemie!! brakuje tej opcji tutaj zeby wyszukiwac rezerwacji po userid
+     */
     public ReservationId handle(ProductReservationCommand productReservationCommand) {
         UserId currentUserId = userContextService.getCurrentUserId();
         if (currentUserId == null)
