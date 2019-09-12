@@ -1,4 +1,4 @@
-package com.jvmless.shop.sharedkernel;
+package com.jvmless.shop.sales.sharedkernel;
 
 public class Address {
     private String city;

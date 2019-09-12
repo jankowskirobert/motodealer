@@ -5,7 +5,10 @@ import com.jvmless.shop.sales.application.handler.ProductReservationCommandHandl
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.bean.validator.BeanValidationException;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.model.rest.RestBindingMode;
+
+import static com.jvmless.shop.sales.application.route.ProductRoute.RESERVED_MESSAGE;
 
 public class ReservationRoute extends RouteBuilder {
 
@@ -34,7 +37,15 @@ public class ReservationRoute extends RouteBuilder {
 
         from("direct:reserve")
                 .to("bean-validator://x")
-                .process(productReservationCommandHandler);
+                .process(productReservationCommandHandler)
+                .choice()
+                    .when(header("reservation_id"))
+                        .process(ReservationMessageConverter.succesfulProductReservationToMessage())
+                        .marshal().json(JsonLibrary.Jackson)
+                        .to("{{integration.route.product.reserved}}")
+                    .otherwise()
+                        .log("Reservation ${body} unsuccessful")
+                .end();
 
     }
 }

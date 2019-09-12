@@ -1,6 +1,6 @@
 package com.jvmless.shop.sales.domain.reservation;
 
-import com.jvmless.shop.sales.domain.productcatalog.ProductId;
+import com.jvmless.shop.sales.domain.product.ProductId;
 import com.jvmless.shop.usermanagement.InMemoryUserRepository;
 import com.jvmless.shop.usermanagement.*;
 import org.junit.Before;

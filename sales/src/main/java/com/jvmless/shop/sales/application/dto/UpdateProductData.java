@@ -1,10 +1,9 @@
 package com.jvmless.shop.sales.application.dto;
 
-import com.jvmless.shop.sales.domain.productcatalog.MotorcycleTechnicalDetails;
-import com.jvmless.shop.sales.domain.productcatalog.ProductId;
+import com.jvmless.shop.sales.domain.product.MotorcycleTechnicalDetails;
+import com.jvmless.shop.sales.domain.product.ProductId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 @AllArgsConstructor

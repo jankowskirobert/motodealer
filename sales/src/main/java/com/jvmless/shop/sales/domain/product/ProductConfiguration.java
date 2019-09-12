@@ -1,4 +1,4 @@
-package com.jvmless.shop.sales.domain.productcatalog;
+package com.jvmless.shop.sales.domain.product;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

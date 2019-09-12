@@ -1,7 +1,7 @@
 package com.jvmless.shop.sales.domain.reservation;
 
 import com.jvmless.shop.core.DomainException;
-import com.jvmless.shop.sales.domain.productcatalog.ProductId;
+import com.jvmless.shop.sales.domain.product.ProductId;
 import com.jvmless.shop.usermanagement.UserId;
 import lombok.Getter;
 

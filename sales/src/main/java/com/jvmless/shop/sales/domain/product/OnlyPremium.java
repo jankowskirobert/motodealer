@@ -1,7 +1,5 @@
-package com.jvmless.shop.sales.domain.productcatalog;
+package com.jvmless.shop.sales.domain.product;
 
-import com.jvmless.shop.sales.domain.productcatalog.ProductId;
-import com.jvmless.shop.sales.domain.productcatalog.ProductReservationPolicy;
 import com.jvmless.shop.usermanagement.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

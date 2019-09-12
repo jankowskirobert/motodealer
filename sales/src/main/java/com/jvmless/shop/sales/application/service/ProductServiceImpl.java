@@ -2,7 +2,10 @@ package com.jvmless.shop.sales.application.service;
 
 import com.jvmless.shop.sales.application.dto.AddProductDto;
 import com.jvmless.shop.sales.application.dto.UpdateProductData;
-import com.jvmless.shop.sales.domain.productcatalog.*;
+import com.jvmless.shop.sales.domain.product.Product;
+import com.jvmless.shop.sales.domain.product.ProductId;
+import com.jvmless.shop.sales.domain.product.ProductRepository;
+import com.jvmless.shop.sales.domain.product.ProductReservationPolicyType;
 import org.springframework.util.StringUtils;
 
 class ProductServiceImpl implements ProductService {

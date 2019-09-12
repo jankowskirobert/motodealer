@@ -13,3 +13,10 @@ spring:
     username: sa
     password: pass
     driverClassName: org.h2.Driver
+
+integration:
+  route:
+    product:
+      reserved: rabbitmq://localhost:5672/product-reserve?autoDelete=false&queue=product-reserve&username=reservation&password=reservation&routingKey=new-product-reservation
+    user:
+      newUserIn: rabbitmq://localhost:5672/register-client?autoDelete=false&queue=register-client&username=reservation&password=reservation&routingKey=new-client-register

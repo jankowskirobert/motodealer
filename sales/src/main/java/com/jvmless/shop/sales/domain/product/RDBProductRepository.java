@@ -1,7 +1,6 @@
-package com.jvmless.shop.sales.domain.productcatalog;
+package com.jvmless.shop.sales.domain.product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 public interface RDBProductRepository extends JpaRepository<Product, ProductId> {
 }

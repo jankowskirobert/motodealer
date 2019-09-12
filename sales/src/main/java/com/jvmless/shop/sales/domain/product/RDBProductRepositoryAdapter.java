@@ -1,7 +1,6 @@
-package com.jvmless.shop.sales.domain.productcatalog;
+package com.jvmless.shop.sales.domain.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 class RDBProductRepositoryAdapter implements ProductRepository {
 

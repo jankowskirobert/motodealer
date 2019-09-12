@@ -1,11 +1,10 @@
-package com.jvmless.shop.sales.domain.productcatalog;
+package com.jvmless.shop.sales.domain.product;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 
 @Getter

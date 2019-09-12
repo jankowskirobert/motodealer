@@ -2,14 +2,14 @@ package com.jvmless.shop.base;
 
 import com.jvmless.shop.sales.application.handler.ProductReservationCommandHandler;
 import com.jvmless.shop.sales.application.route.ReservationRoute;
-import com.jvmless.shop.sales.domain.productcatalog.ProductConfiguration;
-import com.jvmless.shop.sales.domain.productcatalog.ProductRepository;
-import com.jvmless.shop.sales.domain.productcatalog.ProductReservationPolicyFactory;
+import com.jvmless.shop.sales.application.route.UserRoute;
+import com.jvmless.shop.sales.domain.product.ProductConfiguration;
+import com.jvmless.shop.sales.domain.product.ProductRepository;
+import com.jvmless.shop.sales.domain.product.ProductReservationPolicyFactory;
 import com.jvmless.shop.sales.domain.reservation.ReservationRepository;
 import com.jvmless.shop.sales.domain.reservation.ReservationRuleFactory;
 import com.jvmless.shop.usermanagement.UserContextService;
 import com.jvmless.shop.usermanagement.UserRepository;
-import org.apache.camel.spi.RestConfiguration;
 import org.springframework.context.annotation.*;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -37,6 +37,11 @@ public class RoutesConfiguration {
                 new ProductReservationPolicyFactory(userRepository),
                 new ReservationRuleFactory(userRepository)
         );
+    }
+
+    @Bean
+    public UserRoute userRoute() {
+        return new UserRoute();
     }
 
     @Bean

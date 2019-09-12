@@ -1,7 +1,6 @@
 package com.jvmless.shop.sales.application.service;
 
-import com.jvmless.shop.sales.application.service.ProductService;
-import com.jvmless.shop.sales.domain.productcatalog.ProductRepository;
+import com.jvmless.shop.sales.domain.product.ProductRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

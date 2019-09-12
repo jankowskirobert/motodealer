@@ -1,4 +1,4 @@
-package com.jvmless.shop.sales.domain.productcatalog;
+package com.jvmless.shop.sales.domain.product;
 
 import com.jvmless.shop.usermanagement.User;
 import com.jvmless.shop.usermanagement.UserId;

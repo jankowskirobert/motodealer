@@ -1,6 +1,7 @@
 package com.jvmless.shop.sales.domain.productcatalog;
 
 import com.jvmless.shop.core.DomainException;
+import com.jvmless.shop.sales.domain.product.*;
 import com.jvmless.shop.usermanagement.InMemoryUserRepository;
 import com.jvmless.shop.usermanagement.*;
 import org.junit.Assert;
