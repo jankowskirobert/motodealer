@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 public class AcceptanceReserveProductHandlerTest {
@@ -40,29 +41,21 @@ public class AcceptanceReserveProductHandlerTest {
                         , UserType.PREMIUM
                 )
         );
-
-        reservationRepository.save
-                (new Reservation(
-                                RESERVATION_ID
-                                , USER_ID
-                        )
-                );
     }
 
     @Test
     public void shouldReserveProduct() {
-        UserContextService userContextService = () -> USER_ID;
         ProductReservationCommandHandler productReservationCommandHandler
                 = new ProductReservationCommandHandler(
                 productRepository
-                , userContextService
                 , reservationRepository
                 , productReservationPolicyFactory
                 , reservationRuleFactory
         );
         ProductReservationCommand productReservationCommand = new ProductReservationCommand();
-        productReservationCommand.setProductId(PRODUCT_ID);
-        productReservationCommand.setReservationId(RESERVATION_ID);
+        productReservationCommand.setProductId(Collections.singletonList(PRODUCT_ID));
+        productReservationCommand.setNewReservationId(RESERVATION_ID);
+        productReservationCommand.setUserId(USER_ID);
         productReservationCommandHandler.handle(productReservationCommand);
         Product product = productRepository.find(PRODUCT_ID);
         Reservation reservation = reservationRepository.find(RESERVATION_ID);

@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 @RunWith(JUnit4.class)
@@ -73,44 +74,54 @@ public class ReserveProductHandlerTest {
 
     @Test(expected = DomainException.class)
     public void shouldReserveProduct() {
-        UserContextService userContextService = () -> USER_ID_PREMIUM;
-        ProductReservationCommandHandler productReservationCommandHandler = getProductReservationCommandHandler(userContextService);
+//        UserContextService userContextService = () -> USER_ID_PREMIUM;
+        ProductReservationCommandHandler productReservationCommandHandler = getProductReservationCommandHandler();
         ProductReservationCommand productReservationCommand = new ProductReservationCommand();
-        productReservationCommand.setProductId(PRODUCT_ID_ALL);
+        productReservationCommand.setProductId(Collections.singletonList(PRODUCT_ID_ALL));
+        productReservationCommand.setUserId(USER_ID_PREMIUM);
+        ReservationId random = ReservationId.random();
+        productReservationCommand.setNewReservationId(random);
         productReservationCommandHandler.handle(productReservationCommand);
 
-        userContextService = () -> USER_ID_STANDARD;
-        productReservationCommandHandler = getProductReservationCommandHandler(userContextService);
+//        userContextService = () -> USER_ID_STANDARD;
+
+        productReservationCommandHandler = getProductReservationCommandHandler();
         productReservationCommand = new ProductReservationCommand();
-        productReservationCommand.setProductId(PRODUCT_ID_ALL);
+        productReservationCommand.setProductId(Collections.singletonList(PRODUCT_ID_ALL));
+        productReservationCommand.setUserId(USER_ID_STANDARD);
+        ReservationId random2 = ReservationId.random();
+        productReservationCommand.setNewReservationId(random2);
         productReservationCommandHandler.handle(productReservationCommand);
     }
 
     @Test()
     public void shouldReserveProduct2() {
-        UserContextService userContextService = () -> USER_ID_PREMIUM;
-        ProductReservationCommandHandler productReservationCommandHandler = getProductReservationCommandHandler(userContextService);
+        ProductReservationCommandHandler productReservationCommandHandler = getProductReservationCommandHandler();
         ProductReservationCommand productReservationCommand = new ProductReservationCommand();
-        productReservationCommand.setProductId(PRODUCT_ID_ALL);
-        ReservationId reservationId = productReservationCommandHandler.handle(productReservationCommand);
-        Assert.assertNotNull(reservationId);
-        Reservation reservation = reservationRepository.find(reservationId);
+        productReservationCommand.setProductId(Collections.singletonList(PRODUCT_ID_ALL));
+        ReservationId random = ReservationId.random();
+        productReservationCommand.setNewReservationId(random);
+        productReservationCommand.setUserId(USER_ID_PREMIUM);
+        productReservationCommandHandler.handle(productReservationCommand);
+        Assert.assertNotNull(random);
+        Reservation reservation = reservationRepository.find(random);
         Assert.assertTrue(reservation.isActive());
     }
 
     @Test(expected = DomainException.class)
     public void shouldReserveProduct3() {
-        UserContextService userContextService = () -> USER_ID_STANDARD;
-        ProductReservationCommandHandler productReservationCommandHandler = getProductReservationCommandHandler(userContextService);
+        ProductReservationCommandHandler productReservationCommandHandler = getProductReservationCommandHandler();
         ProductReservationCommand productReservationCommand = new ProductReservationCommand();
-        productReservationCommand.setProductId(PRODUCT_ID_PREMIUM);
+        productReservationCommand.setProductId(Collections.singletonList(PRODUCT_ID_PREMIUM));
+        productReservationCommand.setUserId(USER_ID_STANDARD);
+        ReservationId random = ReservationId.random();
+        productReservationCommand.setNewReservationId(random);
         productReservationCommandHandler.handle(productReservationCommand);
     }
 
-    private ProductReservationCommandHandler getProductReservationCommandHandler(UserContextService userContextService) {
+    private ProductReservationCommandHandler getProductReservationCommandHandler() {
         return new ProductReservationCommandHandler(
                 productRepository
-                , userContextService
                 , reservationRepository
                 , productReservationPolicyFactory
                 , reservationRuleFactory

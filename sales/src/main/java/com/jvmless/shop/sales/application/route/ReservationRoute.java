@@ -38,14 +38,10 @@ public class ReservationRoute extends RouteBuilder {
         from("direct:reserve")
                 .to("bean-validator://x")
                 .process(productReservationCommandHandler)
-                .choice()
-                    .when(header("reservation_id"))
-                        .process(ReservationMessageConverter.succesfulProductReservationToMessage())
-                        .marshal().json(JsonLibrary.Jackson)
-                        .to("{{integration.route.product.reserved}}")
-                    .otherwise()
-                        .log("Reservation ${body} unsuccessful")
-                .end();
+                .process(ReservationMessageConverter.succesfulProductReservationToMessage())
+                .marshal().json(JsonLibrary.Jackson)
+                .to("{{integration.route.product.reserved}}");
+
 
     }
 }

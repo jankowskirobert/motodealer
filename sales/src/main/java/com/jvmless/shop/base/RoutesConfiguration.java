@@ -8,7 +8,6 @@ import com.jvmless.shop.sales.domain.product.ProductRepository;
 import com.jvmless.shop.sales.domain.product.ProductReservationPolicyFactory;
 import com.jvmless.shop.sales.domain.reservation.ReservationRepository;
 import com.jvmless.shop.sales.domain.reservation.ReservationRuleFactory;
-import com.jvmless.shop.usermanagement.UserContextService;
 import com.jvmless.shop.usermanagement.UserRepository;
 import org.springframework.context.annotation.*;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -27,12 +26,10 @@ public class RoutesConfiguration {
     @Bean
     public ProductReservationCommandHandler productReservationCommandHandler(
             ProductRepository productRepository,
-            UserContextService userContextService,
             UserRepository userRepository,
             ReservationRepository reservationRepository
     ) {
         return new ProductReservationCommandHandler(productRepository,
-                userContextService,
                 reservationRepository,
                 new ProductReservationPolicyFactory(userRepository),
                 new ReservationRuleFactory(userRepository)
