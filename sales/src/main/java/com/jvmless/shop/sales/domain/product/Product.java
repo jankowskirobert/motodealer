@@ -20,15 +20,11 @@ public class Product implements Serializable {
     private ProductReservationPolicyType reservationPolicyType;
     private UserId owner = null;
     private ProductStatus status;
-    @JoinColumn(name = "product_detail_id")
-    @OneToOne
-    private ProductDetail productDetail;
 
     public Product(ProductId productId) {
         this.productId = productId;
         this.status = ProductStatus.AVAILABLE;
         this.reservationPolicyType = ProductReservationPolicyType.ALL;
-        this.productDetail = new MotorcycleTechnicalDetails();
     }
 
     public Product(ProductId productId, ProductReservationPolicyType productReservationPolicyType) {
@@ -42,7 +38,7 @@ public class Product implements Serializable {
             this.owner = null;
             this.status = ProductStatus.AVAILABLE;
         } else if (isAvailable()) {
-            throw new DomainException("Product is currently not reserved");
+            throw new DomainException(String.format("Product %s is currently not reserved", productId.getId()));
         } else if (isSold()) {
             throw new DomainException("Cannot cancel reservation, product is sold");
         }
@@ -102,9 +98,4 @@ public class Product implements Serializable {
         return ProductStatus.RESERVED.equals(this.status);
     }
 
-    public void updateDetails(@NonNull MotorcycleTechnicalDetails motorcycleTechnicalDetails) {
-        if (isAvailable()) {
-            this.productDetail = motorcycleTechnicalDetails;
-        }
-    }
 }
