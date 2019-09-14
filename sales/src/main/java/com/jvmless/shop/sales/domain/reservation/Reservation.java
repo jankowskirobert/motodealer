@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Getter
@@ -37,11 +38,7 @@ public class Reservation implements Serializable {
     public void reserve(ProductId productId, ReservationPolicy reservationPolicy) {
         if (isActive() && !contains(productId)) {
             if (reservationPolicy.check()) {
-                this.reservationItems.add(
-                        new ReservationItem(productId
-                                , LocalDateTime.now()
-                        )
-                );
+                this.reservationItems.add(new ReservationItem(productId));
             }
         } else {
             throw new DomainException("Cannot reserve, " +
@@ -53,6 +50,21 @@ public class Reservation implements Serializable {
         if (isClosed())
             throw new IllegalStateException("Already closed");
         this.reservationStatus = ReservationStatus.CLOSED;
+    }
+
+    public void cancelReservation(ProductId productId) {
+        if (contains(productId) && isActive()) {
+            Optional<ReservationItem> reservationItemOptional = reservationItems.stream()
+                    .filter(item -> item.getProductId().equals(productId))
+                    .findFirst();
+            reservationItemOptional.ifPresent(reservationItem -> {
+                if (reservationItem.getReservationItemStatus().equals(ReservationItemStatus.ACTIVE)) {
+                    reservationItem.deactivate();
+                } else {
+                    throw new DomainException("Currently item is not reserved by user");
+                }
+            });
+        }
     }
 
     public boolean isClosed() {

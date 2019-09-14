@@ -9,7 +9,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "productId")
 @Entity
@@ -17,4 +16,15 @@ public class ReservationItem {
     @EmbeddedId
     private ProductId productId;
     private LocalDateTime productReservationDate;
+    private LocalDateTime productReservationDisableDate;
+    private ReservationItemStatus reservationItemStatus;
+
+    public ReservationItem(ProductId productId) {
+        this.productId = productId;
+        this.productReservationDate = LocalDateTime.now();
+    }
+
+    public void deactivate() {
+        this.reservationItemStatus = ReservationItemStatus.CLOSED;
+    }
 }

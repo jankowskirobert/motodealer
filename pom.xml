@@ -36,6 +36,7 @@
     <modules>
         <module>sales</module>
         <module>usermanage</module>
+        <module>product</module>
     </modules>
 
 </project>
