@@ -22,9 +22,15 @@ public class ReservationItem {
     public ReservationItem(ProductId productId) {
         this.productId = productId;
         this.productReservationDate = LocalDateTime.now();
+        this.reservationItemStatus = ReservationItemStatus.ACTIVE;
     }
 
     public void deactivate() {
         this.reservationItemStatus = ReservationItemStatus.CLOSED;
+        this.productReservationDisableDate = LocalDateTime.now();
+    }
+
+    public boolean isActive() {
+        return ReservationItemStatus.ACTIVE.equals(this.reservationItemStatus);
     }
 }

@@ -76,6 +76,6 @@ public class Reservation implements Serializable {
     }
 
     public boolean contains(ProductId productId) {
-        return reservationItems.stream().anyMatch(x -> x.getProductId().equals(productId));
+        return reservationItems.stream().anyMatch(x -> productId.equals(x.getProductId()) && x.isActive());
     }
 }

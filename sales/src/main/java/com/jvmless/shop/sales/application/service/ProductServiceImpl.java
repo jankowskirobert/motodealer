@@ -19,9 +19,7 @@ class ProductServiceImpl implements ProductService {
     @Override
     public void updateProductData(UpdateProductData updateProductData) {
         Product product = productRepository.find(updateProductData.getProductId());
-        if (product != null) {
-            product.updateDetails(updateProductData.getMotorcycleData());
-        }
+
     }
 
     @Override
