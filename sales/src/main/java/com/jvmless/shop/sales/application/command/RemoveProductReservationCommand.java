@@ -1,4 +1,4 @@
-package com.jvmless.shop.sales.application.handler;
+package com.jvmless.shop.sales.application.command;
 
 import com.jvmless.shop.sales.domain.product.ProductId;
 import com.jvmless.shop.sales.domain.reservation.ReservationId;

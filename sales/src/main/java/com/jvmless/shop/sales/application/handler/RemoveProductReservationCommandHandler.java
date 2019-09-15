@@ -1,5 +1,6 @@
 package com.jvmless.shop.sales.application.handler;
 
+import com.jvmless.shop.sales.application.command.RemoveProductReservationCommand;
 import com.jvmless.shop.sales.domain.product.Product;
 import com.jvmless.shop.sales.domain.product.ProductId;
 import com.jvmless.shop.sales.domain.product.ProductRepository;
