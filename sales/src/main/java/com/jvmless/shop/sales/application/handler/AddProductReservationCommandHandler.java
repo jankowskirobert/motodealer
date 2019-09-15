@@ -52,6 +52,7 @@ public class AddProductReservationCommandHandler implements Processor {
 
     @Override
     public void process(Exchange exchange) throws Exception {
-
+        AddProductReservationCommand addProductReservationCommand = exchange.getIn().getBody(AddProductReservationCommand.class);
+        this.handle(addProductReservationCommand);
     }
 }

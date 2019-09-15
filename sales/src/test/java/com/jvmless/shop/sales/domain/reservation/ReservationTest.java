@@ -13,37 +13,22 @@ import java.util.HashSet;
 public class ReservationTest {
 
     private final UserId PREMIUM_USER_ID = UserId.of("PREMIUM_USER");
-    InMemoryUserRepository userRepository = new InMemoryUserRepository();
-    ReservationRepository reservationRepository = new InMemoryReservationRepository();
-    ReservationRuleFactory reservationRuleFactory = new ReservationRuleFactory(userRepository);
-
-    @Before
-    public void setUp() {
-        userRepository.save(new User(PREMIUM_USER_ID, new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM));
-    }
 
     @Test
     public void shouldBeAvailableToReserve() {
         ProductId productId = ProductId.generate();
         Reservation reservation = new Reservation(ReservationId.of("RESERVATION_1"), UserId.of("USER_1"));
-        ReservationPolicy reservationPolicy = reservationRuleFactory.generate(
-                reservation.getReservationRule(),
-                reservation.getReservationItems(),
-                PREMIUM_USER_ID
-        );
-        reservation.reserve(productId, reservationPolicy);
+
+        User potentialOwner = new User(PREMIUM_USER_ID, new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM);
+        reservation.reserve(productId, new MaxReservationsPolicy(reservation.getReservationItems(), potentialOwner));
     }
 
     @Test
     public void testRemoveReservedItem() {
         ProductId productId = ProductId.generate();
         Reservation reservation = new Reservation(ReservationId.of("RESERVATION_1"), UserId.of("USER_1"));
-        ReservationPolicy reservationPolicy = reservationRuleFactory.generate(
-                reservation.getReservationRule(),
-                reservation.getReservationItems(),
-                PREMIUM_USER_ID
-        );
-        reservation.reserve(productId, reservationPolicy);
+        User potentialOwner = new User(PREMIUM_USER_ID, new HashSet<UserRole>(Arrays.asList(UserRole.CLIENT)), UserType.PREMIUM);
+        reservation.reserve(productId, new MaxReservationsPolicy(reservation.getReservationItems(), potentialOwner));
         Assert.assertTrue(reservation.contains(productId));
         reservation.cancelReservation(productId);
         Assert.assertFalse(reservation.contains(productId));
