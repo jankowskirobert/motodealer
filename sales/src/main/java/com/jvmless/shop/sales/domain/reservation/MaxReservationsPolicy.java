@@ -21,7 +21,7 @@ public class MaxReservationsPolicy implements ReservationPolicy {
                 if (reservationItems.isEmpty() || reservationItems.size() < 3) {
                     return true;
                 }
-            } else if (potentialOwner.isTypeOrHigher(UserType.PREMIUM)) {
+            } else if (potentialOwner.isAtLeast(UserType.PREMIUM)) {
                 return true;
             }
         return false;

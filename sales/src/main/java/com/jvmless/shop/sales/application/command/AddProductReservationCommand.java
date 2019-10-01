@@ -5,11 +5,13 @@ import com.jvmless.shop.sales.domain.reservation.ReservationId;
 import com.jvmless.shop.usermanagement.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class AddProductReservationCommand {
     @NotNull

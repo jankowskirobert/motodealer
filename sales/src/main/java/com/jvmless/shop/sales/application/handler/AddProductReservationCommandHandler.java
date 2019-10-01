@@ -24,7 +24,7 @@ public class AddProductReservationCommandHandler implements Processor {
 
     public void handle(AddProductReservationCommand addProductReservationCommand) {
         Reservation reservation = reservationRepository.find(addProductReservationCommand.getReservationId());
-        if (reservation.isActive()) {
+        if (reservation.isActive() && reservation.getUserId().equals(addProductReservationCommand.getUserId())) {
             addProductReservationCommand.getProductId().stream().forEach(
                     productId -> {
                         if (reservation.contains(productId)) {
@@ -47,6 +47,8 @@ public class AddProductReservationCommandHandler implements Processor {
                         }
                     }
             );
+        } else {
+            throw new IllegalArgumentException("Reservation is unreachable or not belongs to given user");
         }
     }
 

@@ -21,7 +21,7 @@ public class User {
         return type.equals(this.userType);
     }
 
-    public boolean isTypeOrHigher(UserType type) {
+    public boolean isAtLeast(UserType type) {
         return type.equals(this.userType) || this.userType.getPriority() >= type.getPriority();
     }
 }

@@ -48,10 +48,6 @@ public class Product implements Serializable {
         return ProductStatus.SOLD.equals(this.status);
     }
 
-    public void close(UserId userId) {
-        //only if sold
-    }
-
     public void updateReservationPoicy(@NonNull ProductReservationPolicyType productReservationPolicyType) {
         if (isAvailable()) {
             this.reservationPolicyType = productReservationPolicyType;
@@ -78,7 +74,7 @@ public class Product implements Serializable {
             this.status = ProductStatus.RESERVED;
             this.owner = potentialOwner;
         } else {
-            throw new DomainException("Product cannot be reserved");
+            throw new DomainException("Product cannot be reserved because is already reserved");
         }
     }
 
