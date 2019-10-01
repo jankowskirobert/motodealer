@@ -1,5 +1,6 @@
 package com.jvmless.shop.base;
 
+import com.jvmless.shop.sales.application.handler.AddProductReservationCommandHandler;
 import com.jvmless.shop.sales.application.handler.ProductReservationCommandHandler;
 import com.jvmless.shop.sales.application.route.ReservationRoute;
 import com.jvmless.shop.sales.application.route.UserRoute;
@@ -37,12 +38,28 @@ public class RoutesConfiguration {
     }
 
     @Bean
+    public AddProductReservationCommandHandler addProductReservationCommandHandler(
+            ProductRepository productRepository,
+            ReservationRepository reservationRepository,
+            UserRepository userRepository
+            ) {
+        return new AddProductReservationCommandHandler(
+                reservationRepository,
+                productRepository,
+                new ProductReservationPolicyFactory(userRepository)
+        );
+    }
+
+    @Bean
     public UserRoute userRoute() {
         return new UserRoute();
     }
 
     @Bean
-    public ReservationRoute reservationRoute(ProductReservationCommandHandler productReservationCommandHandler) {
-        return new ReservationRoute(productReservationCommandHandler);
+    public ReservationRoute reservationRoute(
+            ProductReservationCommandHandler productReservationCommandHandler,
+            AddProductReservationCommandHandler addProductReservationCommandHandler
+    ) {
+        return new ReservationRoute(productReservationCommandHandler, addProductReservationCommandHandler);
     }
 }
